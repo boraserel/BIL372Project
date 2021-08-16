@@ -133,6 +133,33 @@ class purchased(db.Model):
         self.enrolls_course_id = enrolls_course_id
         self.enrolls_prod_id = enrolls_prod_id
 
+class adminlogin(db.Model):
+    __tablename__ = 'adminlogin'
+    adminlogin_user = db.Column(db.String, primary_key=True, unique=True)
+    adminlogin_pass = db.Column(db.String)
+    def __init__(self, adminlogin_user, adminlogin_pass):
+        self.adminlogin_user = adminlogin_user
+        self.adminlogin_pass = adminlogin_pass
+
+class customerlogin(db.Model):
+    __tablename__ = 'customerlogin'
+    purchased_prod_id = db.Column(db.Integer,db.ForeignKey('prod.prod_id'),primary_key=True)
+    purchased_cust_id = db.Column(db.Integer,db.ForeignKey('cust.cust_id'),primary_key=True)
+    purchased_order_id = db.Column(db.Integer,db.ForeignKey('order.order_id'),primary_key=True)
+    def __init__(self, enrolls_prod_id, enrolls_course_id):
+        self.enrolls_course_id = enrolls_course_id
+        self.enrolls_prod_id = enrolls_prod_id
+
+class instructorlogin(db.Model):
+    __tablename__ = 'instructorlogin'
+    purchased_prod_id = db.Column(db.Integer,db.ForeignKey('prod.prod_id'),primary_key=True)
+    purchased_cust_id = db.Column(db.Integer,db.ForeignKey('cust.cust_id'),primary_key=True)
+    purchased_order_id = db.Column(db.Integer,db.ForeignKey('order.order_id'),primary_key=True)
+    def __init__(self, enrolls_prod_id, enrolls_course_id):
+        self.enrolls_course_id = enrolls_course_id
+        self.enrolls_prod_id = enrolls_prod_id
+
+
                 
 
 db.create_all()

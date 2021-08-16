@@ -1,11 +1,11 @@
-﻿CourseID,Name,Category,Level,Price,Duration,InstructorID
-1,Web Sitesi Kurma,Web Sitesi,3,20,02:30:22,1
-2,Resim Çizmeyi Öğrenmenin Teknikleri,Resim,1,15,00:10:10,4
-3,Fotoğrafçılık Dersi,Fotoğrafçılık,2,10,00:30:21,5
-4,Temel Gitar Eğitimi,Müzik,1,7,00:45:00,3
-5,İleri Seviye Origami Dersi,Kağıt ve Türevleri,5,22,01:11:11,8
-6,Meyve Ağaçlarında Budama Eğitimi,Doğa,3,25,00:55:11,9
-7,Dansa Yeni Başlayanlar İçin Eğitim Videosu,Dans,1,5,00:45:19,2
-8,Keman Dersi,Müzik,3,17,00:57:02,3
-9,Duvara Kolay Çivi Çakma,Tamirat İşleri,1,1,00:01:30,8
-10,Monopoly Kapsamlı Kutu Oyunu Anlatımı,Oyun,2,5,00:01:20,7
+﻿course_id,course_name,course_category,course_level,course_price,course_duration,course_inst_id
+1,Web Sitesi Kurma,Web Sitesi,3,20,157,1
+2,Resim Çizmeyi Öğrenmenin Teknikleri,Resim,1,15,10,4
+3,Fotoğrafçılık Dersi,Fotoğrafçılık,2,10,30,5
+4,Temel Gitar Eğitimi,Müzik,1,7,45,3
+5,İleri Seviye Origami Dersi,Kağıt ve Türevleri,5,22,71,8
+6,Meyve Ağaçlarında Budama Eğitimi,Doğa,3,25,55,9
+7,Dansa Yeni Başlayanlar İçin Eğitim Videosu,Dans,1,5,45,2
+8,Keman Dersi,Müzik,3,17,57,3
+9,Duvara Kolay Çivi Çakma,Tamirat İşleri,1,1,2,8
+10,Monopoly Kapsamlı Kutu Oyunu Anlatımı,Oyun,2,5,67,7

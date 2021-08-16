@@ -1,4 +1,4 @@
-﻿ProductID,Name,Brand,Weight,Price,Number Of Stock
+﻿prod_id,prod_name,prod_brand,prod_weight,prod_price,prod_instock
 1,F370BK Akustik Gitar,Yamaha,4200,2270.70,20
 2,VLA-9 Keman Set ,Rösler ,980,929.00,5
 3,Çekiç Ahşap Saplı,Brio ,300,39.90,270

@@ -1,4 +1,4 @@
-﻿InstructorID,Name,Surname,Contact,Phone,Average Rate
+﻿inst_id,inst_fname,inst_lname,inst_contact,inst_phone,inst_avgrate
 1,Ali,Sevgili,alis@gmail.com,5309859065,7.3
 2,Mehmet,Kataray,mehmetkata@yahoo.com,5308528408,9.8
 3,Ayşe,Sungurlu,aysesungurlu@gmail.com,5305574788,8.9

@@ -6,7 +6,7 @@ import dbconfig
 
 app = Flask(__name__);
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/hobiburada'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2536@localhost/hobiburada'
 
 
 db = SQLAlchemy(app)

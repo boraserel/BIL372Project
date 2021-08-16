@@ -117,59 +117,70 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover" id="basicTable">
-                    <thead>
-                      <tr>
-                        <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
-    										Comman Practice Followed
-    										-->
-                        <th style="width:25%">Operations</th>
-                        <th style="width:25%">Course ID</th>
-                        <th style="width:25%">Name</th>
-                        <th style="width:25%">Category</th>
-                        <th style="width:15%">Level</th>
-                        <th style="width:15%">Price</th>
-                          <th style="width:15%">Duration</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                   <form id="form-login" class="p-t-15" role="form" method="post" action="{{ '/instructor_edit' }}">
+                <div class="col-lg-8">
 
-                     {% for course in courses_by_instructor %}
-                      <tr>
-                        <td class="v-align-middle">
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Course ID</label>
+                    <div class="controls">
+                    <input type="text"  name="CourseID" value="{{ selected_course.CourseID }}" class="form-control error"  aria-required="true" aria-invalid="true">
 
-                             <div class="btn-group">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Course Name</label>
+                    <div class="controls">
+                    <input type="text"  name="Name" value="{{ selected_course.Name }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Category</label>
+                    <div class="controls">
+                    <input type="text" name="Category" value="{{ selected_course.Category }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Level </label>
+                    <div class="controls">
+                    <input type="text" name="Level" value="{{ selected_course.Level }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Price</label>
+                    <div class="controls">
+                    <input type="text" name="Price" value="{{ selected_course.Price }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Duration</label>
+                    <div class="controls">
+                    <input type="text" name="Duration" value="{{ selected_course.Duration }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
 
-                                <a href="{{ url_for('instructor_page', id='editbutton', value=course.CourseID) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Edit</span> </a>
-                                <a href="{{ url_for('instructor_page', id='deletebutton', value= course.CourseID) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Delete</span> </a>
-
-                                </div>
-
-                        </td>
-                        <td class="v-align-middle ">
-                          <p>{{ course.CourseID }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ course.Name }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ course.Category }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ course.Level }} / 10</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ course.Price }}$</p>
-                        </td>
-                      <td class="v-align-middle">
-                          <p>{{ course.Duration }} Hours</p>
-                        </td>
-                      </tr>
-                     {% endfor%}
-                    </tbody>
-                  </table>
                 </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                    <button aria-label="" class="btn btn-primary btn-lg m-t-10" type="submit">Kaydet</button>
+                </div>
+                <!-- END Form Control-->
+
+                </div>
+                </div>
+              </form>
               </div>
             </div>
             <!-- END card -->

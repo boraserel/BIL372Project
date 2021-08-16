@@ -78,8 +78,8 @@ class course(db.Model):
         self.course_duration = course_duration
         self.course_inst_id = course_inst_id
 
-class order(db.Model):
-    __tablename__ = 'order'
+class orders(db.Model):
+    __tablename__ = 'orders'
     order_id = db.Column(db.Integer, primary_key=True, autoincrement=True,unique=True)
     order_totalprice = db.Column(db.Integer)
     order_quantity = db.Column(db.Integer)
@@ -129,7 +129,7 @@ class purchased(db.Model):
     __tablename__ = 'purchased'
     purchased_prod_id = db.Column(db.Integer,db.ForeignKey('product.prod_id'),primary_key=True)
     purchased_cust_id = db.Column(db.Integer,db.ForeignKey('customer.cust_id'),primary_key=True)
-    purchased_order_id = db.Column(db.Integer,db.ForeignKey('order.order_id'),primary_key=True)
+    purchased_order_id = db.Column(db.Integer,db.ForeignKey('orders.order_id'),primary_key=True)
     def __init__(self, enrolls_prod_id, enrolls_course_id):
         self.enrolls_course_id = enrolls_course_id
         self.enrolls_prod_id = enrolls_prod_id
@@ -144,21 +144,19 @@ class adminlogin(db.Model):
 
 class customerlogin(db.Model):
     __tablename__ = 'customerlogin'
-    purchased_prod_id = db.Column(db.Integer,db.ForeignKey('product.prod_id'),primary_key=True)
-    purchased_cust_id = db.Column(db.Integer,db.ForeignKey('customer.cust_id'),primary_key=True)
-    purchased_order_id = db.Column(db.Integer,db.ForeignKey('order.order_id'),primary_key=True)
-    def __init__(self, enrolls_prod_id, enrolls_course_id):
-        self.enrolls_course_id = enrolls_course_id
-        self.enrolls_prod_id = enrolls_prod_id
+    customerlogin_user = db.Column(db.String, primary_key=True, unique=True)
+    customerlogin_pass = db.Column(db.String)
+    def __init__(self, customerlogin_user, customerlogin_pass):
+        self.customerlogin_user = customerlogin_user
+        self.customerlogin_pass = customerlogin_pass
 
 class instructorlogin(db.Model):
     __tablename__ = 'instructorlogin'
-    purchased_prod_id = db.Column(db.Integer,db.ForeignKey('product.prod_id'),primary_key=True)
-    purchased_cust_id = db.Column(db.Integer,db.ForeignKey('customer.cust_id'),primary_key=True)
-    purchased_order_id = db.Column(db.Integer,db.ForeignKey('order.order_id'),primary_key=True)
-    def __init__(self, enrolls_prod_id, enrolls_course_id):
-        self.enrolls_course_id = enrolls_course_id
-        self.enrolls_prod_id = enrolls_prod_id
+    instructorlogin_user = db.Column(db.String, primary_key=True, unique=True)
+    instructorlogin_pass = db.Column(db.String)
+    def __init__(self, instructorlogin_user, instructorlogin_pass):
+        self.instructorlogin_user = instructorlogin_user
+        self.instructorlogin_pass = instructorlogin_pass
 
 
                 

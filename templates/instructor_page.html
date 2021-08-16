@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>Pages - Admin Dashboard UI Kit - Tables</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <link rel="apple-touch-icon" href="/static/pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/pages/ico/152.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="Meet pages - The simplest and fastest way to build web UI for your dashboard or app." name="description" />
+    <meta content="Ace" name="author" />
+    <link href="/static/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
+    <link href="/static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/static/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/static/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/static/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+    <link class="main-stylesheet" href="/static/pages/css/pages.css" rel="stylesheet" type="text/css" />
+    <!-- Please remove the file below for production: Contains demo classes -->
+    <link class="main-stylesheet" href="/static/assets/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="fixed-header ">
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container ">
+      <!-- START HEADER -->
+      <div class="header ">
+        <!-- START MOBILE SIDEBAR TOGGLE -->
+        <a href="#" class="btn-link toggle-sidebar d-lg-none pg-icon btn-icon-link" data-toggle="sidebar">
+      		menu</a>
+        <!-- END MOBILE SIDEBAR TOGGLE -->
+        <div class="">
+          <div class="brand inline   ">
+            <img src="/static/assets/img/hobiburada_logo.png" alt="logo" data-src="/static/assets/img/hobiburada_logo.png" data-src-retina="/static/assets/img/hobiburada_logo.png" width="78" height="22">
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+
+          <a href="/">
+                    <button aria-label="" class="btn btn-primary btn-lg m-t-10" type="submit">Çıkış yap</button>
+                        </a>
+        </div>
+      </div>
+      <!-- END HEADER -->
+      <!-- START PAGE CONTENT WRAPPER -->
+      <div class="page-content-wrapper ">
+        <!-- START PAGE CONTENT -->
+        <div class="content ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="widget card  no-border no-margin widget-loader-circle">
+                  <div class="card-body">
+                    <div class="p-l-5">
+                      <div class="row">
+                        <div class="col-lg-12 col-xlg-6">
+                          <div class="row m-t-10">
+                            <div class="col-lg-5">
+                              <h4 class="no-margin">{{ instructor_info.Name }} {{ instructor_info.Surname }}</h4>
+                              <p class="small hint-text"> Instructor Bilgileri </p>
+                            </div>
+                            <div class="col-lg-7">
+                              <div class="d-flex pull-right">
+                                <canvas height="46" width="46" class="clear-day hint-text"></canvas>
+                                <h2 class="text-danger bold no-margin p-l-10">ID : {{ instructor_info.InstructorID }}
+                	</h2>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="widget-17-weather b-t b-grey p-t-20">
+                            <div class="weather-info row">
+                                <div class="col-lg-4 p-r-15"></div>
+                              <div class="col-lg-4 p-r-15">
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <p class="pull-left no-margin hint-text fs-13">Contact</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Contact }}</p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <p class="pull-left no-margin hint-text fs-13">Phone</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Phone }}</p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <p class="pull-left no-margin hint-text fs-13">Average Rate</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Average_Rate }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                                <div class="col-lg-4 p-r-15"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-lg-12">
+                      <!-- START CONTAINER FLUID -->
+          <div class=" container-fluid   container-fixed-lg bg-white">
+            <!-- START card -->
+            <div class="card card-transparent">
+              <div class="card-header ">
+                <div class="card-title">{{ instructor_info.Name }} {{ instructor_info.Surname }} Kursları:
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="basicTable">
+                    <thead>
+                      <tr>
+                        <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
+    										Comman Practice Followed
+    										-->
+                        <th style="width:25%">Operations</th>
+                        <th style="width:25%">Course ID</th>
+                        <th style="width:25%">Name</th>
+                        <th style="width:25%">Category</th>
+                        <th style="width:15%">Level</th>
+                        <th style="width:15%">Price</th>
+                          <th style="width:15%">Duration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                     {% for course in courses_by_instructor %}
+                      <tr>
+                        <td class="v-align-middle">
+
+
+                             <div class="btn-group">
+                                             <a href="{{ url_for('instructor_page', id="editbutton",value=course.CourseID) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Edit</span> </a>
+
+
+                                 <a href="{{ url_for('instructor_page', id="deletebutton",value= course.CourseID) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Delete</span> </a>
+
+                                </div>
+
+                        </td>
+                        <td class="v-align-middle ">
+                          <p>{{ course.CourseID }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ course.Name }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ course.Category }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ course.Level }} / 10</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ course.Price }}$</p>
+                        </td>
+                      <td class="v-align-middle">
+                          <p>{{ course.Duration }} Hours</p>
+                        </td>
+                      </tr>
+                     {% endfor%}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- END card -->
+          </div>
+          <!-- END CONTAINER FLUID -->
+                </div>
+            </div>
+
+        </div>
+        <!-- END PAGE CONTENT -->
+        <!-- START COPYRIGHT -->
+        <!-- START CONTAINER FLUID -->
+        <!-- START CONTAINER FLUID -->
+      </div>
+      <!-- END PAGE CONTENT WRAPPER -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+
+    <!-- BEGIN VENDOR JS -->
+    <script src="/static/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+    <!--  A polyfill for browsers that don't support ligatures: remove liga.js if not needed-->
+    <script src="/static/assets/plugins/liga.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/popper/umd/popper.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+    <script src="/static/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script type="text/javascript" src="/static/assets/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="/static/assets/plugins/classie/classie.js"></script>
+    <script src="/static/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="/static/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+    <script type="text/javascript" src="/static/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+    <!-- END VENDOR JS -->
+    <!-- BEGIN CORE TEMPLATE JS -->
+    <!-- BEGIN CORE TEMPLATE JS -->
+    <script src="/static/pages/js/pages.js"></script>
+    <!-- END CORE TEMPLATE JS -->
+    <!-- BEGIN PAGE LEVEL JS -->
+    <script src="/static/assets/js/scripts.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS -->
+    <!-- END CORE TEMPLATE JS -->
+    <!-- BEGIN PAGE LEVEL JS -->
+    <script src="/static/assets/js/tables.js" type="text/javascript"></script>
+    <script src="/static/assets/js/scripts.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS -->
+  </body>
+</html>

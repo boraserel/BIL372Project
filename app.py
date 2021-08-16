@@ -1,5 +1,7 @@
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
-app = Flask(__name__)
+from model import db, app
+from model import course,instructor
+from flask_sqlalchemy import SQLAlchemy
 
 posts = [
     {
@@ -87,7 +89,12 @@ def instructor_page():
     #else redirect instructor page
     id = request.args.get('id')
     value= request.args.get('value')
-    print(id +" " + value +"\n")
+    if id == 'deletebutton':
+        course_toBeDeleted = course.query.filter_by(course_id = value).first()
+        print('ASDASDASDASD')
+        db.session.delete(course_toBeDeleted)
+        db.session.commit()
+
     instructor_info = {
         'InstructorID': '1234567',
         'Name': 'Oğuz',

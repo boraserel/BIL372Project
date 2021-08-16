@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 
 from model import db
 
-from model import Employee,Customer,CustomerLogin,Carrier,Chemist,Company,Content,Confirms,ConsistOf,Customer_Service,EmployeesOfCompany,Accountant,Includes,EmployeeLogin,AdminLogin,Admin,Analyst,Takes,Order,Sells,Department,Manages,Material,MemberLicenceType,OrderDate,Packages,Perfume,ProductFeature,Supplier,Vehicle,VehicleFeatures,Worker,ProductQuantity
+from model import   Cart,Course,Customer,Enrolls,Instructor,Needed,Order,Product,Purchased
 import pandas as pd
 
 data = db.get_engine()  # db is the one from the question

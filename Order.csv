@@ -1,4 +1,4 @@
-﻿OrderID,TotalProductPrice,Product_Quantity,OrderDate,TotalWeight,ShippingPrice,OrderState
+﻿order_id,order_totalprice,order_quantity,order_date,order_totalweight,order_shippingfee,order_state
 1,968.90,2,2021-08-23,1.280,30,Hazırlanıyor
 2,3816.99,2,2021-08-18,4300,100,Hazırlanıyor
 3,3239.60,3,2021-07-25,5480,0,Vardı

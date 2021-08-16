@@ -1,4 +1,4 @@
-﻿OrderID,CustomerID,ProductID
+﻿purchased_order_id,purchased_cust_id,purchased_prod_id
 1,1,2
 1,1,3
 2,3,9

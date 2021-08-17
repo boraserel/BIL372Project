@@ -1,6 +1,8 @@
+from operator import add
 from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
+from sqlalchemy.sql.expression import null, update
 from sqlalchemy.sql.sqltypes import String
 from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
@@ -188,43 +190,37 @@ def all_courses_related_product():
 def all_products():
     id = request.args.get('id') #==add_to_Cart ise
     value = request.args.get('value') #product id
-    products2 = [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-    products = product.query.filter_by().all()
+    custlogid = request.cookies.get('cust_id',type=int)
+
+    products = product.query.all()
     if id=='add_to_cart':
-       # added_product= product.query.filter_by(prod_id=value).first()
-       # new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
-        #db.session.add(new_cart)
-        #db.session.commit()
-        print(products)
-        #print(added_product)
-        #add selected product to cart
+        added_product= product.query.filter_by(prod_id=int(value)).first()
+        cart1 = cart.query.filter_by(cart_cust_id=custlogid,cart_prod_id=int(value)).first()
+        if cart1 != null:
+            print(cart1)
+            cart1.cart_prodcount += 1
+            db.session.commit()
+        else:
+            new_cart = cart(cart_cust_id=custlogid,cart_prod_id=int(value),cart_prodcount=1)
+            db.session.add(new_cart)
+            db.session.commit()
+       
 
     return render_template('all_products.html',products=products)
 
-@app.route('/cart', methods=['GET', 'POST'])
+@app.route('/carts', methods=['GET', 'POST'])
 def carts():
     custid = request.cookies.get('cust_id',type=int)
     id = request.args.get('id') #==delete_from_cart ise
     value = request.args.get('value') #product id
-    products_in_cart= cart.query.filter_by(cart_cust_id = custid)
+    products_in_cart = cart.query.filter_by(cart_cust_id = custid)
+    print(products_in_cart)
+    list = []
+    countlist = []
+    for x in products_in_cart:
+        list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
+        countlist.append(x.cart_prodcount)
+
     if id=='delete_from_cart':
         selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = value)
         db.session.delete(selected_product)
@@ -234,7 +230,7 @@ def carts():
         #empty cart
         print(id)
 
-    return render_template('cart.html',products=products_in_cart)
+    return render_template('carts.html',products=list,count=countlist)
 
 
 @app.route('/my_courses', methods=['GET', 'POST'])

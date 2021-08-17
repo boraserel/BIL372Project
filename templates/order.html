@@ -113,6 +113,13 @@
                     <thead>
                       <tr>
                         <th style="width:25%">Sipariş ID</th>
+                          <th style="width:25%">Toplam ücret</th>
+                          <th style="width:25%">Ürün adeti</th>
+                          <th style="width:25%">Sipariş tarihi</th>
+                          <th style="width:25%">Toplam Ağırlık</th>
+                          <th style="width:25%">Kargo ücreti</th>
+                          <th style="width:25%">Sipariş durumu</th>
+                          <th style="width:25%">Sipariş detayları</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -120,11 +127,30 @@
                      {% for order in orders %}
                       <tr>
 
-                      <td class="v-align-middle">
-                          <p>Sipariş Numarası : {{ order.purchased_order_id }}</p>
+                      <td class="v-align-middle ">
+                          <p>{{ order.order_id }}</p>
                         </td>
+                          <td class="v-align-middle ">
+                          <p>{{ order.order_totalprice }}</p>
+                        </td>
+                          <td class="v-align-middle ">
+                          <p>{{ order.order_quantity }}</p>
+                        </td>
+                           <td class="v-align-middle ">
+                          <p>{{ order.order_date }}</p>
+                        </td>
+                          <td class="v-align-middle ">
+                          <p>{{ order.order_totalweight }}</p>
+                        </td>
+                          <td class="v-align-middle ">
+                          <p>{{ order.order_shippingfee }}</p>
+                        </td>
+                          <td class="v-align-middle ">
+                          <p>{{ order.order_state }}</p>
+                        </td>
+
                         <td class="v-align-middle">
-                                            <a href="{{ url_for('order', id='order_details', value=order.purchased_order_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sipariş Detayları</span> </a>
+                            <a href="{{ url_for('order', id='order_details', value=order.order_id ) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sipariş Detayları</span> </a>
                                     </td>
 
                       </tr>

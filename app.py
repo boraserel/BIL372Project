@@ -317,16 +317,23 @@ def order():
     id = request.args.get('id')
     value = request.args.get('value')  # order id
 
+
+
     if id == 'order_details':
+        print(value)
         ordered_products = db.session.query(purchased,product).filter(purchased.purchased_prod_id==product.prod_id,purchased.purchased_cust_id==custid,purchased.purchased_order_id==int(value)).all()
         print(ordered_products)
         list = []
         for x in ordered_products:
             list.append(x[1])
-            print(x[1])
         return render_template('order_details.html', ordered_products=list,oid=value)
 
-    return render_template('order.html',orders=orderids,custid=custid)
+    list2=[]
+    for o in orderids:
+        order_infos=orders.query.filter_by(order_id=int(o.purchased_order_id)).first()
+        list2.append(order_infos)
+
+    return render_template('order.html',orders=list2,custid=custid)
 
 @app.route('/order_details', methods=['GET', 'POST'])
 def order_details():

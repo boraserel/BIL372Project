@@ -7,7 +7,7 @@ from sqlalchemy.sql.expression import null, select, text, update
 from sqlalchemy.sql.sqltypes import DateTime, String
 from model import db, app, instructorlogin, needed, orders, purchased
 
-from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
+from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart,adminlogin
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import cast,join
@@ -28,6 +28,29 @@ def instructor_login():
 def admin_login():
     return render_template('admin_login.html')
 
+@app.route('/admin_page_checkin', methods=['GET', 'POST'])
+def admin_page_checkin():
+    if request.method == 'POST':
+        if not request.form['username'] or not request.form['password']:
+            return render_template('admin_login.html')
+        else:
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+            adlog = adminlogin.query.filter_by(adminlogin_user = username, adminlogin_pass = password).first()
+            if adlog:  # if a user is found, we want to redirect back to signup page so user can try again
+                ad = adminlogin.query.filter_by(adminlogin_user = username, adminlogin_pass = password).first()
+                courses = course.query.all()
+                products = product.query.all()
+                insts = instructor.query.all()
+                custs = customer.query.all()
+                response = make_response(render_template('admin_page.html', admin = str(adlog.adminlogin_user), products=products, instructors=insts, courses=courses, customers=custs))
+                response.set_cookie("admin_user", str(adlog.adminlogin_user))
+                return response
+
+            else:
+                return render_template('admin_login.html')
+
 @app.route('/instructor_page_checkin', methods=['GET', 'POST'])
 def instructor_page_checkin():
     if request.method == 'POST':
@@ -40,8 +63,6 @@ def instructor_page_checkin():
             instlog = instructorlogin.query.filter_by(instructorlogin_user = username, instructorlogin_pass = password).first()
             if instlog:  # if a user is found, we want to redirect back to signup page so user can try again
                 inst = instructor.query.filter_by(inst_id=instlog.instructorlogin_id).first()
-                print(inst.inst_fname)
-                print(instlog.instructorlogin_id)
                 courses = course.query.filter_by(course_inst_id=inst.inst_id).all()
                 response = make_response(render_template('instructor_page.html', instructor_info = inst, courses_by_instructor = courses))
                 response.set_cookie("inst_id", str(inst.inst_id))
@@ -355,15 +376,11 @@ def order_details():
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():
-    if request.method == 'POST':
-        if not request.form['username'] or not request.form['password']:
-            flash('Please enter all the fields', 'error')
-        else:
-            username = request.form.get('username')
-            password = request.form.get('password')
-
-    #if username and password are not in database redirect instructor page
-    #return render_template('instructor_login.html')
-    #else redirect instructor page
-
-    return render_template('admin_page.html')
+    admin_user = request.cookies.get('admin_user',type=str)
+    ad = adminlogin.query.filter_by(adminlogin_user = admin_user)
+    courses = course.query.all()
+    products = product.query.all()
+    insts = instructor.query.all()
+    custs = customer.query.all()
+    response = make_response(render_template('admin_page.html', admin = str(admin_user), products=products, instructors=insts, courses=courses, customers=custs))
+    return response

@@ -280,6 +280,9 @@ def carts():
         for x in products_in_cart:
             order_totalprice += product.query.filter_by(prod_id = x.cart_prod_id).first().prod_price
             order_totalweight += product.query.filter_by(prod_id = x.cart_prod_id).first().prod_weight
+            temp = product.query.filter_by(prod_id = x.cart_prod_id).first()
+            adet = x.cart_prodcount
+            temp.prod_instock = temp.prod_instock - adet
         
         order_quantity = 0
         for x in countlist:

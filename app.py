@@ -2,8 +2,6 @@ from flask import Flask, request, flash, url_for, redirect, render_template, mak
 from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import update
-
 
 @app.route("/")
 def home():
@@ -78,6 +76,7 @@ def instructor_page():
         response.set_cookie("course_id", str(course_toBeEdited.course_id))      
     
     
+
     return response
 
 @app.route('/instructor_edit', methods=['GET', 'POST'])
@@ -127,7 +126,5 @@ def admin_page():
     #if username and password are not in database redirect instructor page
     #return render_template('instructor_login.html')
     #else redirect instructor page
-
-
 
     return render_template('admin_page.html')

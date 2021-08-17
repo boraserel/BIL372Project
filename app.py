@@ -1,9 +1,10 @@
-from operator import add
+from datetime import date
+from operator import add, ne
 from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
 from sqlalchemy.sql.expression import null, update
-from sqlalchemy.sql.sqltypes import String
+from sqlalchemy.sql.sqltypes import DateTime, String
 from model import db, app, instructorlogin, needed, orders, purchased
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 
@@ -251,27 +252,42 @@ def carts():
         for x in products_in_cart:
             products_in_cart = cart.query.filter_by(cart_cust_id = custid)
             list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
-            countlist.append(x.cart_prodcount)
+            countlist.append({'a':x.cart_prod_id,'b':x.cart_prodcount})
         return render_template('carts.html',products=list,count=countlist)
     if id=='add_to_order':
-        order_totalprice = 0;
-        for x in products_in_cart:
-            list = []
-            countlist = []
-            products_in_cart = cart.query.filter_by(cart_cust_id = custid)
-            list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
-            countlist.append(x.cart_prodcount)
-        
-        #order_quantity = order_quantity
-        #self.order_date = order_date
-        #self.order_totalweight = order_totalweight
-        #self.order_shippingfee = order_shippingfee
-        #self.order_state = order_state
+        order_totalprice = 0
+        order_totalweight = 0
+        products_in_cart = cart.query.filter_by(cart_cust_id = custid).all()
 
-        #neworder = orders()
-        #empty cart
-        print(id)
-    print(countlist)
+        for x in products_in_cart:
+            order_totalprice += product.query.filter_by(prod_id = x.cart_prod_id).first().prod_price
+            order_totalweight += product.query.filter_by(prod_id = x.cart_prod_id).first().prod_weight
+        
+        order_quantity = 0
+        for x in countlist:
+            order_quantity += x.get('b')
+   
+        order_date = date.today()
+        
+            
+        order_shippingfee = order_totalweight*0.05
+        if order_shippingfee < 5:
+            order_shippingfee = 5
+        order_state = "Hazırlanıyor"
+
+        neworder = orders(order_totalprice=order_totalprice,order_quantity=order_quantity,order_date=order_date,order_totalweight=order_totalweight,order_shippingfee=order_shippingfee,order_state=order_state)
+        db.session.add(neworder)
+        db.session.commit()
+        orderid = orders.query.filter_by(order_totalprice=order_totalprice,order_quantity=order_quantity,order_date=order_date,order_totalweight=order_totalweight,order_shippingfee=order_shippingfee,order_state=order_state).first().order_id
+        for x in products_in_cart:
+            newpurchased = purchased(orderid,x.cart_prod_id,custid)
+            db.session.add(newpurchased)
+            db.session.commit()
+
+        list = []
+        countlist = []
+        cart.query.filter_by(cart_cust_id = custid).delete()
+        return render_template('carts.html',products=list,count=countlist)
     return render_template('carts.html',products=list,count=countlist)
 
 
@@ -291,27 +307,10 @@ def my_courses():
 
 @app.route('/order', methods=['GET', 'POST'])
 def order():
-    products_in_order= [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-
-    return render_template('order.html',products=products_in_order)
+    custid = request.cookies.get('cust_id',type=int)
+    orderids = purchased.query.filter_by(purchased_cust_id = custid).distinct(purchased.purchased_order_id).all()
+    print(orderids)
+    return render_template('order.html',orders=orderids)
 
 
 @app.route('/admin_page', methods=['GET', 'POST'])

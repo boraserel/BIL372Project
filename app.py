@@ -246,9 +246,9 @@ def carts():
         selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = int(value)).first()
         db.session.delete(selected_product)
         db.session.commit()
+        list = []
+        countlist = []
         for x in products_in_cart:
-            list = []
-            countlist = []
             products_in_cart = cart.query.filter_by(cart_cust_id = custid)
             list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
             countlist.append(x.cart_prodcount)

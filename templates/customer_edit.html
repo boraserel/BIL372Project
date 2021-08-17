@@ -28,52 +28,8 @@
     <link class="main-stylesheet" href="/static/assets/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-header ">
-
-    <nav class="page-sidebar" data-pages="sidebar">
-
-      <!-- START SIDEBAR MENU -->
-      <div class="sidebar-menu">
-        <!-- BEGIN SIDEBAR MENU ITEMS-->
-        <ul class="menu-items">
-          <li class="m-t-20 ">
-            <a href="customer_page" class="detailed">
-              <span class="title">Profile</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">home</i></span>
-          </li>
-          <li class="">
-            <a href="all_courses" class="detailed">
-              <span class="title">All Courses</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">inbox</i></span>
-          </li>
-            <li class="">
-            <a href="all_products"><span class="title">All Products</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-          <li class="">
-            <a href="my_courses"><span class="title">My Courses</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-            <li class="">
-            <a href="carts" class="detailed">
-              <span class="title">Cart</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">inbox</i></span>
-          </li>
-          <li class="">
-            <a href="order"><span class="title">My Orders</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <!-- END SIDEBAR MENU -->
-    </nav>
     <!-- START PAGE-CONTAINER -->
     <div class="page-container ">
-
       <!-- START HEADER -->
       <div class="header ">
         <!-- START MOBILE SIDEBAR TOGGLE -->
@@ -97,71 +53,89 @@
       <div class="page-content-wrapper ">
         <!-- START PAGE CONTENT -->
         <div class="content ">
-            <div class="row">
+             <div class="row">
                 <div class="col-lg-12">
                       <!-- START CONTAINER FLUID -->
           <div class=" container-fluid   container-fixed-lg bg-white">
             <!-- START card -->
             <div class="card card-transparent">
-                 <div class="card-header ">
-                <div class="card-title">Tüm Ürünler
+              <div class="card-header ">
+                <div class="card-title"> Profil Düzenleme
                 </div>
-
-                <div class="clearfix"></div>
               </div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover" id="basicTable">
-                     <thead>
-                      <tr>
-                           <th style="width:25%">Add to Cart</th>
-                        <th style="width:25%">Product ID</th>
-                        <th style="width:25%">Name</th>
-                        <th style="width:25%">Brand</th>
-                        <th style="width:15%">Weight</th>
-                        <th style="width:15%">Price</th>
-                          <th style="width:15%">Stock statu</th>
-                      </tr>
-                    </thead>
-                     <tbody>
+                   <form id="form-login" class="p-t-15" role="form" method="post" action="{{ '/customer_edit' }}">
+                <div class="col-lg-8">
 
-                     {% for product in products %}
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Customer ID</label>
+                    <div class="controls">
+                    <input type="text"  name="CourseID" value="{{ customer_info.cust_id }}" class="form-control error"  aria-required="true" aria-invalid="true" readonly>
 
-                      <tr>
-                      <td class="v-align-middle">
-                                <a href="{{ url_for('all_products', id='add_to_cart', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Ekle</span> </a>
-                        </td>
-                        <td class="v-align-middle ">
-                          <p>{{ product.prod_id }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_name }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_brand }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_weight }} / 10</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_price }}$</p>
-                        </td>
-                      <td class="v-align-middle">
-                          <p>{{ product.prod_instock }} Hours</p>
-                        </td>
-                      </tr>
-                     {% endfor%}
-                    </tbody>
-                  </table>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Name</label>
+                    <div class="controls">
+                    <input type="text"  name="Name" value="{{ customer_info.cust_fname }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Surname</label>
+                    <div class="controls">
+                    <input type="text" name="Surname" value="{{ customer_info.cust_lname }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Phone</label>
+                    <div class="controls">
+                    <input type="text" name="Phone" value="{{ customer_info.cust_phone }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Adress</label>
+                    <div class="controls">
+                    <input type="text" name="Adress" value="{{ customer_info.cust_address }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Doğum günü</label>
+                    <div class="controls">
+                    <input type="text" name="Doğum günü" value="{{ customer_info.cust_bday }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+
                 </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                    <button aria-label="" class="btn btn-primary btn-lg m-t-10" type="submit">Kaydet</button>
+                </div>
+                <!-- END Form Control-->
+
+                </div>
+                </div>
+              </form>
               </div>
             </div>
             <!-- END card -->
           </div>
-
           <!-- END CONTAINER FLUID -->
                 </div>
             </div>
+
         </div>
         <!-- END PAGE CONTENT -->
         <!-- START COPYRIGHT -->

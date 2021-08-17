@@ -104,7 +104,7 @@
             <!-- START card -->
             <div class="card card-transparent">
                  <div class="card-header ">
-                <div class="card-title">Tüm Ürünler
+                <div class="card-title">Sepete eklenen ürünler
                 </div>
 
                 <div class="clearfix"></div>
@@ -114,7 +114,7 @@
                   <table class="table table-hover" id="basicTable">
                      <thead>
                       <tr>
-                           <th style="width:25%">Add to Cart</th>
+                           <th style="width:25%">Delete from Cart</th>
                         <th style="width:25%">Product ID</th>
                         <th style="width:25%">Name</th>
                         <th style="width:25%">Brand</th>
@@ -129,7 +129,7 @@
 
                       <tr>
                       <td class="v-align-middle">
-                                <a href="{{ url_for('all_products', id='add_to_cart', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Ekle</span> </a>
+                                <a href="{{ url_for('carts', id='delete_from_cart', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sil</span> </a>
                         </td>
                         <td class="v-align-middle ">
                           <p>{{ product.prod_id }}</p>
@@ -141,13 +141,13 @@
                           <p>{{ product.prod_brand }}</p>
                         </td>
                         <td class="v-align-middle">
-                          <p>{{ product.prod_weight }} / 10</p>
+                          <p>{{ product.prod_weight }} kg</p>
                         </td>
                         <td class="v-align-middle">
                           <p>{{ product.prod_price }}$</p>
                         </td>
                       <td class="v-align-middle">
-                          <p>{{ product.prod_instock }} Hours</p>
+                          <p>{{ product.prod_instock }}</p>
                         </td>
                       </tr>
                      {% endfor%}
@@ -156,6 +156,8 @@
                 </div>
               </div>
             </div>
+            <a href="{{ url_for('carts', id='add_to_order') }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sepeti Satın Al</span> </a>
+
             <!-- END card -->
           </div>
 

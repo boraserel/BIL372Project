@@ -56,7 +56,7 @@
             <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
           </li>
             <li class="">
-            <a href="cart" class="detailed">
+            <a href="carts" class="detailed">
               <span class="title">Cart</span>
             </a>
             <span class="icon-thumbnail"><i class="pg-icon">inbox</i></span>
@@ -140,7 +140,9 @@
                                   </div>
                                 </div>
                               </div>
-                                <div class="col-lg-4 p-r-15"></div>
+                                <div class="col-lg-4 p-r-15">
+                                  <a href="{{ url_for('customer_page', id='editprofile', value=customer_info.cust_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Bilgileri Düzenle</span> </a>
+                                </div>
                             </div>
                           </div>
                         </div>

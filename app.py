@@ -1,7 +1,7 @@
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
 from model import db, app, instructorlogin, needed
-from model import course,instructor,enrolls,needed,customerlogin,customer
+from model import course,instructor,enrolls,needed,customerlogin,customer,product
 from flask_sqlalchemy import SQLAlchemy
 
 @app.route("/")
@@ -187,8 +187,8 @@ def all_courses():
 
 @app.route('/all_products', methods=['GET', 'POST'])
 def all_products():
-    id = request.args.get('id') #==show_related ise
-    value = request.args.get('value') #course id
+    id = request.args.get('id') #==add_to_Cart ise
+    value = int(request.args.get('value')) #product id
     products = [{
         'prod_id': '111111',
         'prod_name': 'bahcivan',
@@ -209,6 +209,7 @@ def all_products():
         'prod_price': '120',
         'prod_instock': '122'}]
     if id=='add_to_cart':
+        added_product= product.query.filter_by(prod_id=value).first()
 
         selected_product = {
             'prod_id': '111111',

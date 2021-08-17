@@ -234,7 +234,18 @@ def all_products():
             cart1.cart_prodcount += 1
             db.session.commit()
        
-
+    if id=='add_to_cart2':
+        added_product= product.query.filter_by(prod_id=int(value)).first()
+        cart1 = cart.query.filter_by(cart_cust_id=custlogid,cart_prod_id=int(value)).first()
+        if cart1 == None:
+            new_cart = cart(cart_cust_id=custlogid,cart_prod_id=int(value),cart_prodcount=1)
+            db.session.add(new_cart)
+            db.session.commit()
+        else:
+            cart1.cart_prodcount += 1
+            db.session.commit()
+        filtered_courses = course.query.all()
+        return render_template('all_courses.html',all_courses=filtered_courses)
     return render_template('all_products.html',products=products)
 
 @app.route('/carts', methods=['GET', 'POST'])

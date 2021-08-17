@@ -124,6 +124,7 @@
 
                      {% for product in related_products %}
                       <tr>
+                        
                         <td class="v-align-middle ">
                           <p>{{ product.prod_id }}</p>
                         </td>
@@ -141,6 +142,9 @@
                         </td>
                       <td class="v-align-middle">
                           <p>{{ product.prod_instock }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <a href="{{ url_for('all_products', id='add_to_cart2', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Ekle</span> </a>
                         </td>
                       </tr>
                      {% endfor%}

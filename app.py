@@ -65,7 +65,6 @@ def instructor_page():
         enrolls.query.filter_by(enrolls_course_id = value).delete()
         db.session.delete(course_toBeDeleted)
         db.session.commit()
-        
         inst = instructor.query.filter_by(inst_id=instid).first()
         courses = course.query.filter_by(course_inst_id=instid).all()
         response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
@@ -79,6 +78,7 @@ def instructor_page():
 
     return response
 
+
 @app.route('/instructor_edit', methods=['GET', 'POST'])
 def instructor_edit():
     instid = request.cookies.get('inst_id',type=int)
@@ -86,8 +86,6 @@ def instructor_edit():
     inst = instructor.query.filter_by(inst_id=instid).first()   
     course_toBeEdited = course.query.filter_by(course_id = coursesid).first()
     if request.method == 'POST':
-             
-
              course_toBeEdited.course_name= request.form.get('Name')
              course_toBeEdited.course_category = request.form.get('Category')
              course_toBeEdited.course_level = request.form.get('Level')
@@ -100,8 +98,8 @@ def instructor_edit():
              response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
              return response
 
-@app.route('/customer_page', methods=['GET', 'POST'])
-def customer_page():
+@app.route('/customer_page_checkin', methods=['GET', 'POST'])
+def customer_page_checkin():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
             flash('Please enter all the fields', 'error')
@@ -112,7 +110,54 @@ def customer_page():
     #if username and password are not in database redirect instructor page
     #return render_template('instructor_login.html')
     #else redirect instructor page
-    return render_template('customer_page.html')
+    customer_info = {
+        'cust_id': '111111',
+        'cust_fname': 'bugra',
+        'cust_lname': 'yalcib',
+        'cust_phone': '53142413',
+        'cust_address': 'ankara',
+        'cust_bday': '12.09.2077'}
+    return render_template('customer_page.html',customer_info=customer_info)
+
+@app.route('/customer_page', methods=['GET', 'POST'])
+def customer_page():
+    customer_info = {
+        'cust_id': '111111',
+        'cust_fname': 'bugra',
+        'cust_lname': 'yalcib',
+        'cust_phone': '53142413',
+        'cust_address': 'ankara',
+        'cust_bday': '12.09.2077'}
+    return render_template('customer_page.html',customer_info=customer_info)
+
+@app.route('/all_courses', methods=['GET', 'POST'])
+def all_courses():
+
+    if request.method == 'POST':
+        searched_course = request.form.get('search_bar')  # course id cannot change
+        print(searched_course)
+        filtered_courses = [{
+            'course_id': '111111',
+            'course_name': 'Mimari',
+            'course_category': 'Computer Science',
+            'course_level': '6',
+            'course_price': '500',
+            'course_duration': '12',
+            'course_inst_id': '1'}]
+        return render_template('all_courses.html', all_courses=filtered_courses)
+
+    all_courses = [{
+        'course_id': '111111',
+        'course_name': 'Mimari',
+        'course_category': 'Computer Science',
+        'course_level': '6',
+        'course_price': '500',
+        'course_duration': '12',
+        'course_inst_id': '1'}]
+
+    return render_template('all_courses.html',all_courses=all_courses)
+
+
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

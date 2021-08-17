@@ -146,9 +146,80 @@ def all_courses():
 
     all_courses = course.query.all()
 
+    id = request.args.get('id') #==show_related ise
+    value = request.args.get('value') #
+    if id=='show_related':
+        related_products=[{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'},{
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'},{
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+        print(value)
+
+        selected_course={
+        'course_id': '111111',
+        'course_name': 'bahcivan',
+        'course_category': 'bahçe',
+        'course_level': '5',
+        'course_price': '120',
+        'course_duration': '122',
+        'course_inst_id':"21313"}
+
+
+        return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=related_products)
+
     return render_template('all_courses.html',all_courses=all_courses)
 
 
+
+
+
+
+@app.route('/all_courses_related_product', methods=['GET', 'POST'])
+def all_courses_related_product():
+    related_products = [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+
+    selected_course = {
+        'course_id': '111111',
+        'course_name': 'bahcivan',
+        'course_category': 'bahçe',
+        'course_level': '5',
+        'course_price': '120',
+        'course_duration': '122',
+        'course_inst_id': "21313"}
+    return render_template('all_courses_related_product.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

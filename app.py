@@ -3,7 +3,7 @@ from operator import add, ne
 from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
-from sqlalchemy.sql.expression import null, update
+from sqlalchemy.sql.expression import null, text, update
 from sqlalchemy.sql.sqltypes import DateTime, String
 from model import db, app, instructorlogin, needed, orders, purchased
 
@@ -283,7 +283,7 @@ def carts():
         neworder = orders(order_totalprice=order_totalprice,order_quantity=order_quantity,order_date=order_date,order_totalweight=order_totalweight,order_shippingfee=order_shippingfee,order_state=order_state)
         db.session.add(neworder)
         db.session.commit()
-        orderid = orders.query.filter_by(order_totalprice=order_totalprice,order_quantity=order_quantity,order_date=order_date,order_totalweight=order_totalweight,order_shippingfee=order_shippingfee,order_state=order_state).first().order_id
+        orderid = orders.query.filter_by(order_totalprice=order_totalprice,order_quantity=order_quantity,order_date=order_date,order_totalweight=order_totalweight,order_shippingfee=order_shippingfee,order_state=order_state).order_by(text("order_id desc")).first().order_id
         for x in products_in_cart:
             newpurchased = purchased(orderid,x.cart_prod_id,custid)
             db.session.add(newpurchased)

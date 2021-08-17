@@ -116,6 +116,7 @@
                       </tr>
                     </thead>
                     <tbody>
+
                      {% for order in orders %}
                       <tr>
                       <td class="v-align-middle">
@@ -124,6 +125,7 @@
                         <td class="v-align-middle">
                                             <a href="{{ url_for('order', id='order_details', value=order.purchased_order_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sipariş Detayları</span> </a>
                                     </td>
+
                       </tr>
                      {% endfor%}
                     </tbody>

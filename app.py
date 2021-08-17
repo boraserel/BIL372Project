@@ -4,6 +4,7 @@ from sqlalchemy.orm import query
 from sqlalchemy.sql.sqltypes import String
 from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import cast
 
@@ -44,7 +45,6 @@ def instructor_page_checkin():
                 return response
 
             else:
-                flash('Incorrect Email or Password')
                 return render_template('instructor_login.html')
 
     #if username and password are not in database redirect instructor page
@@ -116,6 +116,7 @@ def customer_page_checkin():
             cust = customer.query.filter_by(cust_id=custlog.customerlogin_id).first()
             response = make_response(render_template('customer_page.html',customer_info=cust))
             response.set_cookie("cust_id", str(cust.cust_id))
+
             return response
 
         else:
@@ -124,13 +125,8 @@ def customer_page_checkin():
 
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
-    customer_info = {
-        'cust_id': '111111',
-        'cust_fname': 'bugra',
-        'cust_lname': 'yalcib',
-        'cust_phone': '53142413',
-        'cust_address': 'ankara',
-        'cust_bday': '12.09.2077'}
+    custlogid = request.cookies.get('custlog_id',type=int)
+    customer_info =customer.query.filter_by(cust_id = custlogid).first()
     return render_template('customer_page.html',customer_info=customer_info)
 
 @app.route('/all_courses', methods=['GET', 'POST'])
@@ -171,44 +167,23 @@ def all_courses():
     all_courses = course.query.all()
 
     id = request.args.get('id') #==show_related ise
-    value = request.args.get('value') #course id
+    value = request.args.get('value') #
     if id=='show_related':
-        related_products=[{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'},{
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'},{
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-        print(value)
 
-        selected_course={
-        'course_id': '111111',
-        'course_name': 'bahcivan',
-        'course_category': 'bahçe',
-        'course_level': '5',
-        'course_price': '120',
-        'course_duration': '122',
-        'course_inst_id':"21313"}
-
-
-        return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=related_products)
+        selected_course = course.query.filter_by(course_id = value).first()
+        need = needed.query.filter_by(needed_course_id = value).all()
+        list = []
+        for x in need:
+            list.append(product.query.filter_by(prod_id = x.needed_prod_id).first())
+        return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=list)
 
     return render_template('all_courses.html',all_courses=all_courses)
 
+@app.route('/all_courses_related_product', methods=['GET', 'POST'])
+def all_courses_related_product():
+    return render_template('all_courses_related_product.html')
 
+        
 @app.route('/all_products', methods=['GET', 'POST'])
 def all_products():
     id = request.args.get('id') #==add_to_Cart ise

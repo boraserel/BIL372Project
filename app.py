@@ -125,10 +125,24 @@ def customer_page_checkin():
             return render_template('customer_login.html')
 
 
+@app.route('/customer_edit', methods=['GET', 'POST'])
+def customer_edit():
+    cust_id = request.cookies.get('cust_id',type=int)
+
+    customer_info = customer.query.filter_by(cust_id=cust_id).first()
+    return render_template('customer_edit.html', customer_info=customer_info)
+
+
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
     custlogid = request.cookies.get('cust_id',type=int)
     customer_info =customer.query.filter_by(cust_id = custlogid).first()
+    id = request.args.get('id')
+    value = request.args.get('value')
+
+    if id == 'editprofile':
+        return render_template('customer_edit.html', customer_info=customer_info)
+
     return render_template('customer_page.html',customer_info=customer_info)
 
 @app.route('/all_courses', methods=['GET', 'POST'])

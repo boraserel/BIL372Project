@@ -2,15 +2,15 @@ from datetime import date
 from operator import add, ne
 from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
-from sqlalchemy.orm import query
-from sqlalchemy.sql.expression import null, text, update
+from sqlalchemy.orm import query, session
+from sqlalchemy.sql.expression import null, select, text, update
 from sqlalchemy.sql.sqltypes import DateTime, String
 from model import db, app, instructorlogin, needed, orders, purchased
 
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import cast
+from sqlalchemy import cast,join
 
 @app.route("/")
 def home():
@@ -231,7 +231,6 @@ def all_products():
             db.session.add(new_cart)
             db.session.commit()
         else:
-            print(cart1)
             cart1.cart_prodcount += 1
             db.session.commit()
        
@@ -244,7 +243,6 @@ def carts():
     id = request.args.get('id') #==delete_from_cart ise
     value = request.args.get('value') #product id
     products_in_cart = cart.query.filter_by(cart_cust_id = custid)
-    print(products_in_cart)
     list = []
     countlist = []
     for x in products_in_cart:
@@ -295,6 +293,8 @@ def carts():
         list = []
         countlist = []
         cart.query.filter_by(cart_cust_id = custid).delete()
+        db.session.commit()
+
         return render_template('carts.html',products=list,count=countlist)
     return render_template('carts.html',products=list,count=countlist)
 
@@ -313,9 +313,24 @@ def my_courses():
 def order():
     custid = request.cookies.get('cust_id',type=int)
     orderids = purchased.query.filter_by(purchased_cust_id = custid).distinct(purchased.purchased_order_id).all()
-    print(orderids)
-    return render_template('order.html',orders=orderids)
 
+    id = request.args.get('id')
+    value = request.args.get('value')  # order id
+
+    if id == 'order_details':
+        ordered_products = db.session.query(purchased,product).filter(purchased.purchased_prod_id==product.prod_id,purchased.purchased_cust_id==custid,purchased.purchased_order_id==int(value)).all()
+        print(ordered_products)
+        list = []
+        for x in ordered_products:
+            list.append(x[1])
+            print(x[1])
+        return render_template('order_details.html', ordered_products=list,oid=value)
+
+    return render_template('order.html',orders=orderids,custid=custid)
+
+@app.route('/order_details', methods=['GET', 'POST'])
+def order_details():
+    return render_template('order_details.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

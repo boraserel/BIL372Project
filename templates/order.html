@@ -122,26 +122,12 @@
                     </thead>
                     <tbody>
 
-                     {% for product in products %}
+                     {% for order in orders %}
                       <tr>
                         <td class="v-align-middle ">
-                          <p>{{ product.prod_id }}</p>
+                          <p>{{ order.purchased_order_id }}</p>
                         </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_name }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_brand }}</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_weight }} / 10</p>
-                        </td>
-                        <td class="v-align-middle">
-                          <p>{{ product.prod_price }}$</p>
-                        </td>
-                      <td class="v-align-middle">
-                          <p>{{ product.prod_instock }} Hours</p>
-                        </td>
+                        
                       </tr>
                      {% endfor%}
                     </tbody>

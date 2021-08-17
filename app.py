@@ -185,13 +185,16 @@ def all_courses():
     id = request.args.get('id') #==show_related ise
     value = request.args.get('value') #
     if id=='show_related':
-
         selected_course = course.query.filter_by(course_id = value).first()
         need = needed.query.filter_by(needed_course_id = value).all()
         list = []
         for x in need:
             list.append(product.query.filter_by(prod_id = x.needed_prod_id).first())
         return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=list)
+    if id == 'purchase_course':
+        
+        selected_course = course.query.filter_by(course_id = value).first()
+        #add selected course to my course
 
     return render_template('all_courses.html',all_courses=all_courses)
 

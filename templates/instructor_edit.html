@@ -62,7 +62,7 @@
                         <div class="col-lg-12 col-xlg-6">
                           <div class="row m-t-10">
                             <div class="col-lg-5">
-                              <h4 class="no-margin">{{ instructor_info.Name }} {{ instructor_info.Surname }}</h4>
+                              <h4 class="no-margin">{{ instructor_info.inst_fname }} {{ instructor_info.lname }}</h4>
                               <p class="small hint-text"> Instructor Bilgileri </p>
                             </div>
                             <div class="col-lg-7">
@@ -80,19 +80,19 @@
                                 <div class="row">
                                   <div class="col-lg-12">
                                     <p class="pull-left no-margin hint-text fs-13">Contact</p>
-                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Contact }}</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.inst_contact }}</p>
                                   </div>
                                 </div>
                                 <div class="row">
                                   <div class="col-lg-12">
                                     <p class="pull-left no-margin hint-text fs-13">Phone</p>
-                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Phone }}</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.inst_phone }}</p>
                                   </div>
                                 </div>
                                 <div class="row">
                                   <div class="col-lg-12">
                                     <p class="pull-left no-margin hint-text fs-13">Average Rate</p>
-                                    <p class="pull-right no-margin fs-13">{{ instructor_info.Average_Rate }}</p>
+                                    <p class="pull-right no-margin fs-13">{{ instructor_info.inst_avgrate }}</p>
                                   </div>
                                 </div>
                               </div>
@@ -113,7 +113,7 @@
             <!-- START card -->
             <div class="card card-transparent">
               <div class="card-header ">
-                <div class="card-title">{{ instructor_info.Name }} {{ instructor_info.Surname }} Kursları:
+                <div class="card-title">{{ instructor_info.inst_fname }} {{ instructor_info.lname }} Kursları:
                 </div>
               </div>
               <div class="card-body">
@@ -124,7 +124,7 @@
                     <div class="form-group form-group-default has-error">
                     <label>Course ID</label>
                     <div class="controls">
-                    <input type="text"  name="CourseID" value="{{ selected_course.CourseID }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text"  name="CourseID" value="{{ selected_course.course_id }}" class="form-control error"  aria-required="true" aria-invalid="true" readonly>
 
                     </div>
                     </div>
@@ -133,7 +133,7 @@
                     <div class="form-group form-group-default has-error">
                     <label>Course Name</label>
                     <div class="controls">
-                    <input type="text"  name="Name" value="{{ selected_course.Name }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text"  name="Name" value="{{ selected_course.course_name }}" class="form-control error"  aria-required="true" aria-invalid="true">
                     </div>
                     </div>
                     </div>
@@ -141,7 +141,7 @@
                     <div class="form-group form-group-default has-error">
                     <label>Category</label>
                     <div class="controls">
-                    <input type="text" name="Category" value="{{ selected_course.Category }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text" name="Category" value="{{ selected_course.course_category }}" class="form-control error"  aria-required="true" aria-invalid="true">
                     </div>
                     </div>
                     </div>
@@ -149,7 +149,7 @@
                     <div class="form-group form-group-default has-error">
                     <label> Level </label>
                     <div class="controls">
-                    <input type="text" name="Level" value="{{ selected_course.Level }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text" name="Level" value="{{ selected_course.course_level }}" class="form-control error"  aria-required="true" aria-invalid="true">
                     </div>
                     </div>
                     </div>
@@ -157,7 +157,7 @@
                     <div class="form-group form-group-default has-error">
                     <label> Price</label>
                     <div class="controls">
-                    <input type="text" name="Price" value="{{ selected_course.Price }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text" name="Price" value="{{ selected_course.course_price }}" class="form-control error"  aria-required="true" aria-invalid="true">
                     </div>
                     </div>
                     </div>
@@ -165,7 +165,7 @@
                     <div class="form-group form-group-default has-error">
                     <label> Duration</label>
                     <div class="controls">
-                    <input type="text" name="Duration" value="{{ selected_course.Duration }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    <input type="text" name="Duration" value="{{ selected_course.course_duration }}" class="form-control error"  aria-required="true" aria-invalid="true">
                     </div>
                     </div>
                     </div>

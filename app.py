@@ -71,6 +71,7 @@ def instructor_page():
     if id == 'editbutton':
         inst = instructor.query.filter_by(inst_id=instid).first()
         course_toBeEdited = course.query.filter_by(course_id = value).first()
+        print(course_toBeEdited.course_name)
         response = make_response(render_template('instructor_edit.html',instructor_info=inst,selected_course=course_toBeEdited))  
         response.set_cookie("course_id", str(course_toBeEdited.course_id))      
     

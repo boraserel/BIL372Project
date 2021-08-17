@@ -211,9 +211,9 @@ def all_products():
     products = product.query.filter_by().all()
     if id=='add_to_cart':
         added_product= product.query.filter_by(prod_id=value).first()
-        new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
-        db.session.add(new_cart)
-        db.session.commit()
+       # new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
+        #db.session.add(new_cart)
+        #db.session.commit()
         print(products)
         print(added_product)
         #add selected product to cart

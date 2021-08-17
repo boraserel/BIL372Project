@@ -1,8 +1,11 @@
+from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
+from sqlalchemy.sql.sqltypes import String
 from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import cast
 
 @app.route("/")
 def home():
@@ -104,7 +107,7 @@ def instructor_edit():
 def customer_page_checkin():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
-            flash('Please enter all the fields', 'error')
+            return render_template('instructor_login.html')
         else:
             username = request.form.get('username')
             password = request.form.get('password')
@@ -116,7 +119,6 @@ def customer_page_checkin():
             return response
 
         else:
-            flash('Incorrect Email or Password')
             return render_template('instructor_login.html')
 
 
@@ -135,14 +137,36 @@ def customer_page():
 def all_courses():
 
     if request.method == 'POST':
-        searched_course = request.form.get('search_bar')  # course id cannot change
-        print(searched_course)
-        if(searched_course == ''):
-            filtered_courses = course.query.all()
-        else:
-            searched_course_tag = "%{}%".format(searched_course)
-            filtered_courses = course.query.filter(course.course_category.ilike(searched_course_tag))
-        return render_template('all_courses.html', all_courses=filtered_courses)
+            if(request.form.get('CourseID') != ''):
+                searched_course = request.form.get('CourseID')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_id = searched_course)
+            elif(request.form.get('InstructorID') != ''):
+                searched_course = request.form.get('InstructorID')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_inst_id = searched_course)
+
+            elif(request.form.get('Name') != ''):
+                searched_course = request.form.get('Name')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter(course.course_name.ilike(searched_course_tag1))
+
+            elif(request.form.get('Category') != ''):
+                searched_course = request.form.get('Category')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter(course.course_name.ilike(searched_course_tag1))
+            elif(request.form.get('Level') != ''):
+                searched_course = request.form.get('Level')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_level = searched_course)
+            elif(request.form.get('Duration') != ''):
+                searched_course = request.form.get('Duration')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_duration = searched_course)
+            else:
+                filtered_courses = course.query.all()
+        
+            return render_template('all_courses.html', all_courses=filtered_courses)
 
     all_courses = course.query.all()
 

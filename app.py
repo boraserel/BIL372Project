@@ -1,6 +1,8 @@
+from operator import add
 from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
+from sqlalchemy.sql.expression import null, update
 from sqlalchemy.sql.sqltypes import String
 from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
@@ -107,7 +109,7 @@ def instructor_edit():
 def customer_page_checkin():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
-            return render_template('instructor_login.html')
+            return render_template('customer_login.html')
         else:
             username = request.form.get('username')
             password = request.form.get('password')
@@ -120,13 +122,34 @@ def customer_page_checkin():
             return response
 
         else:
-            return render_template('instructor_login.html')
+            return render_template('customer_login.html')
+
+
+@app.route('/customer_edit', methods=['GET', 'POST'])
+def customer_edit():
+    cust_id = request.cookies.get('cust_id',type=int)
+    customer_info = customer.query.filter_by(cust_id=cust_id).first()
+
+    customer_info.cust_fname = request.form.get('Name')
+    customer_info.cust_lname = request.form.get('Surname')
+    customer_info.cust_phone = request.form.get('Phone')
+    customer_info.cust_address = request.form.get('Adress')
+    customer_info.cust_bday = request.form.get('Doğum günü')
+    db.session.commit()
+
+    return render_template('customer_page.html', customer_info=customer_info)
 
 
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
-    custlogid = request.cookies.get('custlog_id',type=int)
+    custlogid = request.cookies.get('cust_id',type=int)
     customer_info =customer.query.filter_by(cust_id = custlogid).first()
+    id = request.args.get('id')
+    value = request.args.get('value')
+
+    if id == 'editprofile':
+        return render_template('customer_edit.html', customer_info=customer_info)
+
     return render_template('customer_page.html',customer_info=customer_info)
 
 @app.route('/all_courses', methods=['GET', 'POST'])
@@ -187,78 +210,48 @@ def all_courses_related_product():
 @app.route('/all_products', methods=['GET', 'POST'])
 def all_products():
     id = request.args.get('id') #==add_to_Cart ise
-    value = int(request.args.get('value')) #product id
-    products2 = [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-    products = product.query.filter_by().all()
+    value = request.args.get('value') #product id
+    custlogid = request.cookies.get('cust_id',type=int)
+
+    products = product.query.all()
     if id=='add_to_cart':
-        added_product= product.query.filter_by(prod_id=value).first()
-       # new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
-        #db.session.add(new_cart)
-        #db.session.commit()
-        print(products)
-        print(added_product)
-        #add selected product to cart
+        added_product= product.query.filter_by(prod_id=int(value)).first()
+        cart1 = cart.query.filter_by(cart_cust_id=custlogid,cart_prod_id=int(value)).first()
+        if cart1 == None:
+            new_cart = cart(cart_cust_id=custlogid,cart_prod_id=int(value),cart_prodcount=1)
+            db.session.add(new_cart)
+            db.session.commit()
+        else:
+            print(cart1)
+            cart1.cart_prodcount += 1
+            db.session.commit()
+       
 
     return render_template('all_products.html',products=products)
 
-@app.route('/cart', methods=['GET', 'POST'])
-def cart():
+@app.route('/carts', methods=['GET', 'POST'])
+def carts():
+    custid = request.cookies.get('cust_id',type=int)
     id = request.args.get('id') #==delete_from_cart ise
     value = request.args.get('value') #product id
-    products_in_cart= [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-    if id=='delete_from_cart':
+    products_in_cart = cart.query.filter_by(cart_cust_id = custid)
+    print(products_in_cart)
+    list = []
+    countlist = []
+    for x in products_in_cart:
+        list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
+        countlist.append(x.cart_prodcount)
 
-        selected_product = {
-            'prod_id': '111111',
-            'prod_name': 'bahcivan',
-            'prod_brand': 'bahçe',
-            'prod_weight': '5',
-            'prod_price': '120',
-            'prod_instock': '122'}
-        print(id)
-        #delete selected product to cart
+    if id=='delete_from_cart':
+        selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = value)
+        db.session.delete(selected_product)
+        db.session.commit()
     if id=='add_to_order':
         #add products in cart to order data table
         #empty cart
         print(id)
 
-    return render_template('cart.html',products=products_in_cart)
+    return render_template('carts.html',products=list,count=countlist)
 
 
 @app.route('/my_courses', methods=['GET', 'POST'])
@@ -299,38 +292,6 @@ def order():
 
     return render_template('order.html',products=products_in_order)
 
-
-@app.route('/all_courses_related_product', methods=['GET', 'POST'])
-def all_courses_related_product():
-    related_products = [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-
-    selected_course = {
-        'course_id': '111111',
-        'course_name': 'bahcivan',
-        'course_category': 'bahçe',
-        'course_level': '5',
-        'course_price': '120',
-        'course_duration': '122',
-        'course_inst_id': "21313"}
-    return render_template('all_courses_related_product.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

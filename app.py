@@ -1,8 +1,7 @@
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
-from model import db, app, instructorlogin
-from model import course,instructor
+from model import db, app, instructorlogin, needed
+from model import course,instructor,enrolls,needed
 from flask_sqlalchemy import SQLAlchemy
-
 
 @app.route("/")
 def home():
@@ -36,7 +35,8 @@ def instructor_page_checkin():
                 print(instlog.instructorlogin_id)
                 courses = course.query.filter_by(course_inst_id=inst.inst_id).all()
                 response = make_response(render_template('instructor_page.html', instructor_info = inst, courses_by_instructor = courses))
-                response.set_cookie("inst_id", str(instructor.inst_id))
+                response.set_cookie("inst_id", str(inst.inst_id))
+
                 return response
 
             else:
@@ -57,95 +57,46 @@ def instructor_page():
     #else redirect instructor page
     id = request.args.get('id')
     value= request.args.get('value')
-    courses = course.query.filter_by(course_inst_id=inst.inst_id).all()
+    print(request.cookies.get('inst_id'))
+    instid = request.cookies.get('inst_id',type=int)
     if id == 'deletebutton':
         course_toBeDeleted = course.query.filter_by(course_id = value).first()
-        print('ASDASDASDASD')
+        needed.query.filter_by(needed_course_id = value).delete()
+        enrolls.query.filter_by(enrolls_course_id = value).delete()
         db.session.delete(course_toBeDeleted)
         db.session.commit()
+        inst = instructor.query.filter_by(inst_id=instid).first()
+        courses = course.query.filter_by(course_inst_id=instid).all()
+        response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
+    if id == 'editbutton':
+        inst = instructor.query.filter_by(inst_id=instid).first()
+        course_toBeEdited = course.query.filter_by(course_id = value).first()
+        response = make_response(render_template('instructor_edit.html',instructor_info=inst,selected_course=course_toBeEdited))  
+        response.set_cookie("course_id", str(course_toBeEdited.course_id))      
+    
+    
 
-    instructor_info = {
-        'InstructorID': '1234567',
-        'Name': 'Oğuz',
-        'Surname': 'Ergin',
-        'Contact': 'oergin@etu.edu.tr',
-        'Phone': '5335242415',
-        'Average_Rate': '1'}
-    courses_by_instructor = [{
-        'CourseID': '111111',
-        'Name': 'Mimari',
-        'Category': 'Computer Science',
-        'Level': '6',
-        'Price': '500',
-        'Duration': '12'}, {
-        'CourseID': '22222',
-        'Name': 'Bahçivanlık',
-        'Category': 'Bahçe',
-        'Level': '3',
-        'Price': '200',
-        'Duration': '5'}, {
-        'CourseID': '333333',
-        'Name': 'Antik Kazıcılık',
-        'Category': 'Arkeoloji',
-        'Level': '7',
-        'Price': '600',
-        'Duration': '30'}]
+    return response
 
-    #if id= delete delete row where id = value and render below
-    if id=="deletebutton" :
-        #delete
-        return render_template('instructor_page.html',instructor_info=instructor_info,courses_by_instructor=courses_by_instructor)
-    #if id= edit get row datas where id=value and render edit page with selected row parameters.
-    if id=="editbutton":
-        #course id oldugu row
-        selected_course= course.query.filter_by(course_id = value).first()
-        return render_template('instructor_edit.html',instructor_info=instructor_info,selected_course=selected_course)
 
 @app.route('/instructor_edit', methods=['GET', 'POST'])
 def instructor_edit():
+    instid = request.cookies.get('inst_id',type=int)
+    coursesid = request.cookies.get('course_id',type=int)
+    inst = instructor.query.filter_by(inst_id=instid).first()   
+    course_toBeEdited = course.query.filter_by(course_id = coursesid).first()
     if request.method == 'POST':
-             eID=request.form.get('CourseID') #course id cannot change
-             eName= request.form.get('Name')
-             eCategory = request.form.get('Category')
-             eLevel = request.form.get('Level')
-             ePrice = request.form.get('Price')
-             eDuration = request.form.get('Duration')
+             course_toBeEdited.course_name= request.form.get('Name')
+             course_toBeEdited.course_category = request.form.get('Category')
+             course_toBeEdited.course_level = request.form.get('Level')
+             course_toBeEdited.course_price = request.form.get('Price')
+             course_toBeEdited.course_duration = request.form.get('Duration')
+             db.session.commit()
 
-    #course tablosunu degistir.
-    #course idden instructor  id bul
-    #instructor id den courseları bul ve instructor page renderla
-    instructor_info = {
-        'InstructorID': '1234567',
-        'Name': 'Oğuz',
-        'Surname': 'Ergin',
-        'Contact': 'oergin@etu.edu.tr',
-        'Phone': '5335242415',
-        'Average_Rate': '1'}
-    courses_by_instructor = [{
-        'CourseID': '111111',
-        'Name': 'Mimari',
-        'Category': 'Computer Science',
-        'Level': '6',
-        'Price': '500',
-        'Duration': '12'}, {
-        'CourseID': '22222',
-        'Name': 'Bahçivanlık',
-        'Category': 'Bahçe',
-        'Level': '3',
-        'Price': '200',
-        'Duration': '5'}, {
-        'CourseID': '333333',
-        'Name': 'Antik Kazıcılık',
-        'Category': 'Arkeoloji',
-        'Level': '7',
-        'Price': '600',
-        'Duration': '30'}]
-    return render_template('instructor_page.html', instructor_info=instructor_info,courses_by_instructor=courses_by_instructor)
+             courses = course.query.filter_by(course_inst_id=instid).all()
 
-    #if username and password are not in database redirect instructor page
-    #return render_template('instructor_login.html')
-    #else redirect instructor page
-    return render_template('customer_page.html')
+             response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
+             return response
 
 @app.route('/customer_page_checkin', methods=['GET', 'POST'])
 def customer_page_checkin():
@@ -220,7 +171,5 @@ def admin_page():
     #if username and password are not in database redirect instructor page
     #return render_template('instructor_login.html')
     #else redirect instructor page
-
-
 
     return render_template('admin_page.html')

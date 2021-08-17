@@ -129,9 +129,10 @@ class purchased(db.Model):
     purchased_prod_id = db.Column(db.Integer,db.ForeignKey('product.prod_id'),primary_key=True)
     purchased_cust_id = db.Column(db.Integer,db.ForeignKey('customer.cust_id'),primary_key=True)
     purchased_order_id = db.Column(db.Integer,db.ForeignKey('orders.order_id'),primary_key=True)
-    def __init__(self, enrolls_prod_id, enrolls_course_id):
-        self.enrolls_course_id = enrolls_course_id
-        self.enrolls_prod_id = enrolls_prod_id
+    def __init__(self, purchased_order_id, purchased_prod_id, purchased_cust_id):
+        self.purchased_order_id = purchased_order_id
+        self.purchased_prod_id = purchased_prod_id
+        self.purchased_cust_id = purchased_cust_id
 
 class adminlogin(db.Model):
     __tablename__ = 'adminlogin'

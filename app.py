@@ -233,7 +233,7 @@ def carts():
     countlist = []
     for x in products_in_cart:
         list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
-        countlist.append(x.cart_prodcount)
+        countlist.append({'a':x.cart_prod_id,'b':x.cart_prodcount})
 
     if id=='delete_from_cart':
         selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = value)
@@ -243,7 +243,7 @@ def carts():
         #add products in cart to order data table
         #empty cart
         print(id)
-
+    print(countlist)
     return render_template('carts.html',products=list,count=countlist)
 
 

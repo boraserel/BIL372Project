@@ -6,6 +6,7 @@ from sqlalchemy.orm import query
 from sqlalchemy.sql.expression import null, update
 from sqlalchemy.sql.sqltypes import DateTime, String
 from model import db, app, instructorlogin, needed, orders, purchased
+
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 
 from flask_sqlalchemy import SQLAlchemy
@@ -257,6 +258,7 @@ def carts():
             list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
             countlist.append({'a':x.cart_prod_id,'b':x.cart_prodcount})
         return render_template('carts.html',products=list,count=countlist)
+
     if id=='add_to_order':
         order_totalprice = 0
         order_totalweight = 0
@@ -286,7 +288,6 @@ def carts():
             newpurchased = purchased(orderid,x.cart_prod_id,custid)
             db.session.add(newpurchased)
             db.session.commit()
-
         list = []
         countlist = []
         cart.query.filter_by(cart_cust_id = custid).delete()

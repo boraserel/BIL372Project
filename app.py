@@ -1,6 +1,7 @@
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
+from sqlalchemy.orm import query
 from model import db, app, instructorlogin, needed
-from model import course,instructor,enrolls,needed
+from model import course,instructor,enrolls,needed,customerlogin,customer
 from flask_sqlalchemy import SQLAlchemy
 
 @app.route("/")
@@ -107,18 +108,17 @@ def customer_page_checkin():
         else:
             username = request.form.get('username')
             password = request.form.get('password')
+        custlog = customerlogin.query.filter_by(customerlogin_user = username, customerlogin_pass = password).first()
+        if custlog:  # if a user is found, we want to redirect back to signup page so user can try again
+            cust = customer.query.filter_by(cust_id=custlog.customerlogin_id).first()
+            response = make_response(render_template('customer_page.html',customer_info=cust))
+            response.set_cookie("cust_id", str(cust.cust_id))
+            return response
 
-    #if username and password are not in database redirect instructor page
-    #return render_template('instructor_login.html')
-    #else redirect instructor page
-    customer_info = {
-        'cust_id': '111111',
-        'cust_fname': 'bugra',
-        'cust_lname': 'yalcib',
-        'cust_phone': '53142413',
-        'cust_address': 'ankara',
-        'cust_bday': '12.09.2077'}
-    return render_template('customer_page.html',customer_info=customer_info)
+        else:
+            flash('Incorrect Email or Password')
+            return render_template('instructor_login.html')
+
 
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
@@ -137,24 +137,14 @@ def all_courses():
     if request.method == 'POST':
         searched_course = request.form.get('search_bar')  # course id cannot change
         print(searched_course)
-        filtered_courses = [{
-            'course_id': '111111',
-            'course_name': 'Mimari',
-            'course_category': 'Computer Science',
-            'course_level': '6',
-            'course_price': '500',
-            'course_duration': '12',
-            'course_inst_id': '1'}]
+        if(searched_course == ''):
+            filtered_courses = course.query.all()
+        else:
+            searched_course_tag = "%{}%".format(searched_course)
+            filtered_courses = course.query.filter(course.course_category.ilike(searched_course_tag))
         return render_template('all_courses.html', all_courses=filtered_courses)
 
-    all_courses = [{
-        'course_id': '111111',
-        'course_name': 'Mimari',
-        'course_category': 'Computer Science',
-        'course_level': '6',
-        'course_price': '500',
-        'course_duration': '12',
-        'course_inst_id': '1'}]
+    all_courses = course.query.all()
 
     return render_template('all_courses.html',all_courses=all_courses)
 

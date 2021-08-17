@@ -263,6 +263,21 @@ def cart():
 
     return render_template('cart.html',products=products_in_cart)
 
+
+@app.route('/my_courses', methods=['GET', 'POST'])
+def my_courses():
+    my_all_courses= [{
+        'course_id': '111111',
+        'course_name': 'bahcivan',
+        'course_category': 'bahçe',
+        'course_level': '5',
+        'course_price': '120',
+        'course_duration': '122',
+         'course_inst_id': '122'}]
+
+    return render_template('my_courses.html',courses=my_all_courses)
+
+
 @app.route('/order', methods=['GET', 'POST'])
 def order():
     products_in_order= [{
@@ -286,10 +301,6 @@ def order():
         'prod_instock': '122'}]
 
     return render_template('order.html',products=products_in_order)
-
-
-
-
 
 
 @app.route('/all_courses_related_product', methods=['GET', 'POST'])

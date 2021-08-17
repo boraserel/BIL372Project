@@ -1,8 +1,12 @@
+from typing import Coroutine
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
-from model import db, app, instructorlogin, needed, product
-from model import course,instructor,enrolls,needed,customerlogin,customer
+from sqlalchemy.sql.sqltypes import String
+from model import db, app, instructorlogin, needed
+from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import cast
 
 @app.route("/")
 def home():
@@ -112,7 +116,7 @@ def customer_page_checkin():
             cust = customer.query.filter_by(cust_id=custlog.customerlogin_id).first()
             response = make_response(render_template('customer_page.html',customer_info=cust))
             response.set_cookie("cust_id", str(cust.cust_id))
-            response.set_cookie("custlog_id", str(custlog.customerlogin_id))
+
             return response
 
         else:
@@ -129,14 +133,36 @@ def customer_page():
 def all_courses():
 
     if request.method == 'POST':
-        searched_course = request.form.get('search_bar')  # course id cannot change
-        print(searched_course)
-        if(searched_course == ''):
-            filtered_courses = course.query.all()
-        else:
-            searched_course_tag = "%{}%".format(searched_course)
-            filtered_courses = course.query.filter(course.course_category.ilike(searched_course_tag))
-        return render_template('all_courses.html', all_courses=filtered_courses)
+            if(request.form.get('CourseID') != ''):
+                searched_course = request.form.get('CourseID')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_id = searched_course)
+            elif(request.form.get('InstructorID') != ''):
+                searched_course = request.form.get('InstructorID')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_inst_id = searched_course)
+
+            elif(request.form.get('Name') != ''):
+                searched_course = request.form.get('Name')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter(course.course_name.ilike(searched_course_tag1))
+
+            elif(request.form.get('Category') != ''):
+                searched_course = request.form.get('Category')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter(course.course_name.ilike(searched_course_tag1))
+            elif(request.form.get('Level') != ''):
+                searched_course = request.form.get('Level')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_level = searched_course)
+            elif(request.form.get('Duration') != ''):
+                searched_course = request.form.get('Duration')
+                searched_course_tag1 = "%{}%".format(searched_course)
+                filtered_courses = course.query.filter_by(course_duration = searched_course)
+            else:
+                filtered_courses = course.query.all()
+        
+            return render_template('all_courses.html', all_courses=filtered_courses)
 
     all_courses = course.query.all()
 
@@ -157,7 +183,154 @@ def all_courses():
 def all_courses_related_product():
     return render_template('all_courses_related_product.html')
 
+        
+@app.route('/all_products', methods=['GET', 'POST'])
+def all_products():
+    id = request.args.get('id') #==add_to_Cart ise
+    value = int(request.args.get('value')) #product id
+    products2 = [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+    products = product.query.filter_by().all()
+    if id=='add_to_cart':
+        added_product= product.query.filter_by(prod_id=value).first()
+       # new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
+        #db.session.add(new_cart)
+        #db.session.commit()
+        print(products)
+        print(added_product)
+        #add selected product to cart
 
+    return render_template('all_products.html',products=products)
+
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    id = request.args.get('id') #==delete_from_cart ise
+    value = request.args.get('value') #product id
+    products_in_cart= [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+    if id=='delete_from_cart':
+
+        selected_product = {
+            'prod_id': '111111',
+            'prod_name': 'bahcivan',
+            'prod_brand': 'bahçe',
+            'prod_weight': '5',
+            'prod_price': '120',
+            'prod_instock': '122'}
+        print(id)
+        #delete selected product to cart
+    if id=='add_to_order':
+        #add products in cart to order data table
+        #empty cart
+        print(id)
+
+    return render_template('cart.html',products=products_in_cart)
+
+
+@app.route('/my_courses', methods=['GET', 'POST'])
+def my_courses():
+    my_all_courses= [{
+        'course_id': '111111',
+        'course_name': 'bahcivan',
+        'course_category': 'bahçe',
+        'course_level': '5',
+        'course_price': '120',
+        'course_duration': '122',
+         'course_inst_id': '122'}]
+
+    return render_template('my_courses.html',courses=my_all_courses)
+
+
+@app.route('/order', methods=['GET', 'POST'])
+def order():
+    products_in_order= [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+
+    return render_template('order.html',products=products_in_order)
+
+
+@app.route('/all_courses_related_product', methods=['GET', 'POST'])
+def all_courses_related_product():
+    related_products = [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+
+    selected_course = {
+        'course_id': '111111',
+        'course_name': 'bahcivan',
+        'course_category': 'bahçe',
+        'course_level': '5',
+        'course_price': '120',
+        'course_duration': '122',
+        'course_inst_id': "21313"}
+    return render_template('all_courses_related_product.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

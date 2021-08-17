@@ -201,9 +201,13 @@ def all_courses():
             list.append(product.query.filter_by(prod_id = x.needed_prod_id).first())
         return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=list)
     if id == 'purchase_course':
-        
-        selected_course = course.query.filter_by(course_id = value).first()
-        #add selected course to my course
+        cust_id = request.cookies.get('cust_id',type=int)
+        cust_enrolls = enrolls.query.filter_by(enrolls_prod_id = cust_id, enrolls_course_id = value).first()
+        if not cust_enrolls:
+            selected_course = course.query.filter_by(course_id = value).first()
+            newenroll = enrolls(enrolls_prod_id = cust_id,enrolls_course_id = selected_course.course_id)
+            db.session.add(newenroll)
+            db.session.commit()
 
     return render_template('all_courses.html',all_courses=all_courses)
 
@@ -297,16 +301,12 @@ def carts():
 
 @app.route('/my_courses', methods=['GET', 'POST'])
 def my_courses():
-    my_all_courses= [{
-        'course_id': '111111',
-        'course_name': 'bahcivan',
-        'course_category': 'bahçe',
-        'course_level': '5',
-        'course_price': '120',
-        'course_duration': '122',
-         'course_inst_id': '122'}]
-
-    return render_template('my_courses.html',courses=my_all_courses)
+    cust_id = request.cookies.get('cust_id',type=int)
+    my_enrolls = enrolls.query.filter_by(enrolls_prod_id = cust_id).all()
+    list = []
+    for x in my_enrolls:
+            list.append(course.query.filter_by(course_id = x.enrolls_course_id).first())
+    return render_template('my_courses.html',courses=list)
 
 
 @app.route('/order', methods=['GET', 'POST'])

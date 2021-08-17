@@ -129,7 +129,7 @@
 
                       <tr>
                       <td class="v-align-middle">
-                                <a href="{{ url_for('cart', id='delete_from_cart', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sil</span> </a>
+                                <a href="{{ url_for('carts', id='delete_from_cart', value=product.prod_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sil</span> </a>
                         </td>
                         <td class="v-align-middle ">
                           <p>{{ product.prod_id }}</p>
@@ -156,7 +156,7 @@
                 </div>
               </div>
             </div>
-            <a href="{{ url_for('cart', id='add_to_order') }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sepeti Satın Al</span> </a>
+            <a href="{{ url_for('carts', id='add_to_order') }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sepeti Satın Al</span> </a>
 
             <!-- END card -->
           </div>

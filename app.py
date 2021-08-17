@@ -220,39 +220,15 @@ def all_products():
     return render_template('all_products.html',products=products)
 
 @app.route('/cart', methods=['GET', 'POST'])
-def cart():
+def carts():
+    custid = request.cookies.get('cust_id',type=int)
     id = request.args.get('id') #==delete_from_cart ise
     value = request.args.get('value') #product id
-    products_in_cart= [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
+    products_in_cart= cart.query.filter_by(cart_cust_id = custid)
     if id=='delete_from_cart':
-
-        selected_product = {
-            'prod_id': '111111',
-            'prod_name': 'bahcivan',
-            'prod_brand': 'bahçe',
-            'prod_weight': '5',
-            'prod_price': '120',
-            'prod_instock': '122'}
-        print(id)
-        #delete selected product to cart
+        selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = value)
+        db.session.delete(selected_product)
+        db.session.commit()
     if id=='add_to_order':
         #add products in cart to order data table
         #empty cart

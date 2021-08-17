@@ -28,52 +28,8 @@
     <link class="main-stylesheet" href="/static/assets/css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-header ">
-
-    <nav class="page-sidebar" data-pages="sidebar">
-
-      <!-- START SIDEBAR MENU -->
-      <div class="sidebar-menu">
-        <!-- BEGIN SIDEBAR MENU ITEMS-->
-        <ul class="menu-items">
-          <li class="m-t-20 ">
-            <a href="customer_page" class="detailed">
-              <span class="title">Profile</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">home</i></span>
-          </li>
-          <li class="">
-            <a href="all_courses" class="detailed">
-              <span class="title">All Courses</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">inbox</i></span>
-          </li>
-            <li class="">
-            <a href="all_products"><span class="title">All Products</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-          <li class="">
-            <a href="my_courses"><span class="title">My Courses</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-            <li class="">
-            <a href="cart" class="detailed">
-              <span class="title">Cart</span>
-            </a>
-            <span class="icon-thumbnail"><i class="pg-icon">inbox</i></span>
-          </li>
-          <li class="">
-            <a href="order"><span class="title">My Orders</span></a>
-            <span class="icon-thumbnail"><i class="pg-icon">social</i></span>
-          </li>
-
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <!-- END SIDEBAR MENU -->
-    </nav>
     <!-- START PAGE-CONTAINER -->
     <div class="page-container ">
-
       <!-- START HEADER -->
       <div class="header ">
         <!-- START MOBILE SIDEBAR TOGGLE -->
@@ -97,59 +53,86 @@
       <div class="page-content-wrapper ">
         <!-- START PAGE CONTENT -->
         <div class="content ">
-            <div class="row">
+             <div class="row">
                 <div class="col-lg-12">
-                    <div class="widget card  no-border no-margin widget-loader-circle">
-                  <div class="card-body">
-                    <div class="p-l-5">
-                      <div class="row">
-                        <div class="col-lg-12 col-xlg-6">
-                          <div class="row m-t-10">
-                            <div class="col-lg-5">
-                              <h4 class="no-margin">{{ customer_info.cust_fname }} {{ customer_info.cust_lname }}</h4>
-                              <p class="small hint-text"> Customer Bilgileri </p>
-                            </div>
-                            <div class="col-lg-7">
-                              <div class="d-flex pull-right">
-                                <canvas height="46" width="46" class="clear-day hint-text"></canvas>
-                                <h2 class="text-danger bold no-margin p-l-10">ID : {{ customer_info.cust_id }}
-                	</h2>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="widget-17-weather b-t b-grey p-t-20">
-                            <div class="weather-info row">
-                                <div class="col-lg-4 p-r-15"></div>
-                              <div class="col-lg-4 p-r-15">
-                                <div class="row">
-                                  <div class="col-lg-12">
-                                    <p class="pull-left no-margin hint-text fs-13">Phone</p>
-                                    <p class="pull-right no-margin fs-13">{{ customer_info.cust_phone }}</p>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-lg-12">
-                                    <p class="pull-left no-margin hint-text fs-13">Adress</p>
-                                    <p class="pull-right no-margin fs-13">{{ customer_info.cust_address }}</p>
-                                  </div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-lg-12">
-                                    <p class="pull-left no-margin hint-text fs-13">Doğum günü</p>
-                                    <p class="pull-right no-margin fs-13">{{ customer_info.cust_bday }}</p>
-                                  </div>
-                                </div>
-                              </div>
-                                <div class="col-lg-4 p-r-15">
-                                  <a href="{{ url_for('customer_page', id='editprofile', value=customer_info.cust_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Bilgileri Düzenle</span> </a>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      <!-- START CONTAINER FLUID -->
+          <div class=" container-fluid   container-fixed-lg bg-white">
+            <!-- START card -->
+            <div class="card card-transparent">
+              <div class="card-header ">
+                <div class="card-title"> Profil Düzenleme
                 </div>
+              </div>
+              <div class="card-body">
+                   <form id="form-login" class="p-t-15" role="form" method="post" action="{{ '/customer_edit' }}">
+                <div class="col-lg-8">
+
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Course ID</label>
+                    <div class="controls">
+                    <input type="text"  name="CourseID" value="{{ customer_info.cust_id }}" class="form-control error"  aria-required="true" aria-invalid="true" readonly>
+
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Course Name</label>
+                    <div class="controls">
+                    <input type="text"  name="Name" value="{{ customer_info.cust_fname }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label>Category</label>
+                    <div class="controls">
+                    <input type="text" name="Category" value="{{ customer_info.cust_lname }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Level </label>
+                    <div class="controls">
+                    <input type="text" name="Level" value="{{ customer_info.cust_phone }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Price</label>
+                    <div class="controls">
+                    <input type="text" name="Price" value="{{ customer_info.cust_address }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group form-group-default has-error">
+                    <label> Duration</label>
+                    <div class="controls">
+                    <input type="text" name="Duration" value="{{ customer_info.cust_bday }}" class="form-control error"  aria-required="true" aria-invalid="true">
+                    </div>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                    <button aria-label="" class="btn btn-primary btn-lg m-t-10" type="submit">Kaydet</button>
+                </div>
+                <!-- END Form Control-->
+
+                </div>
+                </div>
+              </form>
+              </div>
+            </div>
+            <!-- END card -->
+          </div>
+          <!-- END CONTAINER FLUID -->
                 </div>
             </div>
 

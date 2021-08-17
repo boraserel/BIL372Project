@@ -187,7 +187,7 @@ def all_courses_related_product():
 @app.route('/all_products', methods=['GET', 'POST'])
 def all_products():
     id = request.args.get('id') #==add_to_Cart ise
-    value = int(request.args.get('value')) #product id
+    value = request.args.get('value') #product id
     products2 = [{
         'prod_id': '111111',
         'prod_name': 'bahcivan',
@@ -209,12 +209,12 @@ def all_products():
         'prod_instock': '122'}]
     products = product.query.filter_by().all()
     if id=='add_to_cart':
-        added_product= product.query.filter_by(prod_id=value).first()
+       # added_product= product.query.filter_by(prod_id=value).first()
        # new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
         #db.session.add(new_cart)
         #db.session.commit()
         print(products)
-        print(added_product)
+        #print(added_product)
         #add selected product to cart
 
     return render_template('all_products.html',products=products)

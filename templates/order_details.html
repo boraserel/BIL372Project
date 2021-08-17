@@ -104,7 +104,7 @@
             <!-- START card -->
             <div class="card card-transparent">
               <div class="card-header ">
-                <div class="card-title"> Idli kullanıcı {{custid}} için şipariş Id'leri
+                <div class="card-title">{{ oid }} nolu siparişe ait ürünler
                 </div>
               </div>
               <div class="card-body">
@@ -112,18 +112,36 @@
                   <table class="table table-hover" id="basicTable">
                     <thead>
                       <tr>
-                        <th style="width:25%">Sipariş ID</th>
+                        <th style="width:25%">Product ID</th>
+                        <th style="width:25%">Name</th>
+                        <th style="width:25%">Brand</th>
+                        <th style="width:15%">Weight</th>
+                        <th style="width:15%">Price</th>
+                          <th style="width:15%">Stock statu</th>
                       </tr>
                     </thead>
                     <tbody>
-                     {% for order in orders %}
+
+                     {% for product in ordered_products %}
                       <tr>
-                      <td class="v-align-middle">
-                          <p>Sipariş Numarası : {{ order.purchased_order_id }}</p>
+                        <td class="v-align-middle ">
+                          <p>{{ product.prod_id }}</p>
                         </td>
                         <td class="v-align-middle">
-                                            <a href="{{ url_for('order', id='order_details', value=order.purchased_order_id) }}"  class="btn btn-info btn-icon-left m-b-10"> <i class="pg-icon"></i><span class="">Sipariş Detayları</span> </a>
-                                    </td>
+                          <p>{{ product.prod_name }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ product.prod_brand }}</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ product.prod_weight }}gr</p>
+                        </td>
+                        <td class="v-align-middle">
+                          <p>{{ product.prod_price }}$</p>
+                        </td>
+                      <td class="v-align-middle">
+                          <p>{{ product.prod_instock }}</p>
+                        </td>
                       </tr>
                      {% endfor%}
                     </tbody>

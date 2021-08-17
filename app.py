@@ -314,8 +314,21 @@ def order():
     custid = request.cookies.get('cust_id',type=int)
     orderids = purchased.query.filter_by(purchased_cust_id = custid).distinct(purchased.purchased_order_id).all()
     print(orderids)
-    return render_template('order.html',orders=orderids)
 
+    id = request.args.get('id')
+    value = request.args.get('value')  # order id
+
+    if id == 'order_details':
+        print("")
+        ordered_products = purchased.query.filter_by(purchased_order_id=int(value)).purchased_prod_id.all()
+        print(ordered_products)
+        return render_template('order_details.html', ordered_products=ordered_products,oid=value)
+
+    return render_template('order.html',orders=orderids,custid=custid)
+
+@app.route('/order_details', methods=['GET', 'POST'])
+def order_details():
+    return render_template('order_details.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

@@ -125,7 +125,7 @@ def customer_page_checkin():
 
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
-    custlogid = request.cookies.get('custlog_id',type=int)
+    custlogid = request.cookies.get('cust_id',type=int)
     customer_info =customer.query.filter_by(cust_id = custlogid).first()
     return render_template('customer_page.html',customer_info=customer_info)
 
@@ -299,38 +299,6 @@ def order():
 
     return render_template('order.html',products=products_in_order)
 
-
-@app.route('/all_courses_related_product', methods=['GET', 'POST'])
-def all_courses_related_product():
-    related_products = [{
-        'prod_id': '111111',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '22222',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}, {
-        'prod_id': '333333',
-        'prod_name': 'bahcivan',
-        'prod_brand': 'bahçe',
-        'prod_weight': '5',
-        'prod_price': '120',
-        'prod_instock': '122'}]
-
-    selected_course = {
-        'course_id': '111111',
-        'course_name': 'bahcivan',
-        'course_category': 'bahçe',
-        'course_level': '5',
-        'course_price': '120',
-        'course_duration': '122',
-        'course_inst_id': "21313"}
-    return render_template('all_courses_related_product.html')
 
 @app.route('/admin_page', methods=['GET', 'POST'])
 def admin_page():

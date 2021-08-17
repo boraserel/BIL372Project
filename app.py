@@ -1,7 +1,7 @@
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from sqlalchemy.orm import query
 from model import db, app, instructorlogin, needed
-from model import course,instructor,enrolls,needed,customerlogin,customer,product
+from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 from flask_sqlalchemy import SQLAlchemy
 
 @app.route("/")
@@ -189,7 +189,7 @@ def all_courses():
 def all_products():
     id = request.args.get('id') #==add_to_Cart ise
     value = int(request.args.get('value')) #product id
-    products = [{
+    products2 = [{
         'prod_id': '111111',
         'prod_name': 'bahcivan',
         'prod_brand': 'bahçe',
@@ -208,17 +208,14 @@ def all_products():
         'prod_weight': '5',
         'prod_price': '120',
         'prod_instock': '122'}]
+    products = product.query.filter_by().all()
     if id=='add_to_cart':
         added_product= product.query.filter_by(prod_id=value).first()
-
-        selected_product = {
-            'prod_id': '111111',
-            'prod_name': 'bahcivan',
-            'prod_brand': 'bahçe',
-            'prod_weight': '5',
-            'prod_price': '120',
-            'prod_instock': '122'}
-        print(value)
+        new_cart = cart(cart_cust_id=,cart_prod_id=,cart_prodcount=1)
+        db.session.add(new_cart)
+        db.session.commit()
+        print(products)
+        print(added_product)
         #add selected product to cart
 
     return render_template('all_products.html',products=products)

@@ -2,11 +2,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, flash, url_for, redirect, render_template, make_response
 from flask_migrate import Migrate
 import datetime
-import dbconfig
 
 app = Flask(__name__);
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2536@localhost/hobiburada'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/hobiburada'
 
 
 db = SQLAlchemy(app)

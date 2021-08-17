@@ -104,7 +104,7 @@ def instructor_edit():
 def customer_page_checkin():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
-            flash('Please enter all the fields', 'error')
+            return render_template('instructor_login.html')
         else:
             username = request.form.get('username')
             password = request.form.get('password')
@@ -116,7 +116,6 @@ def customer_page_checkin():
             return response
 
         else:
-            flash('Incorrect Email or Password')
             return render_template('instructor_login.html')
 
 
@@ -140,6 +139,7 @@ def all_courses():
         if(searched_course == ''):
             filtered_courses = course.query.all()
         else:
+            column =  request.form.get("name")
             searched_course_tag = "%{}%".format(searched_course)
             filtered_courses = course.query.filter(course.course_category.ilike(searched_course_tag))
         return render_template('all_courses.html', all_courses=filtered_courses)

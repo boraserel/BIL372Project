@@ -147,7 +147,7 @@ def all_courses():
     all_courses = course.query.all()
 
     id = request.args.get('id') #==show_related ise
-    value = request.args.get('value') #
+    value = request.args.get('value') #course id
     if id=='show_related':
         related_products=[{
         'prod_id': '111111',
@@ -183,6 +183,44 @@ def all_courses():
         return render_template('all_courses_related_product.html',selected_course=selected_course,related_products=related_products)
 
     return render_template('all_courses.html',all_courses=all_courses)
+
+
+@app.route('/all_products', methods=['GET', 'POST'])
+def all_products():
+    id = request.args.get('id') #==show_related ise
+    value = request.args.get('value') #course id
+    products = [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+    if id=='add_to_cart':
+
+        selected_product = {
+            'prod_id': '111111',
+            'prod_name': 'bahcivan',
+            'prod_brand': 'bahçe',
+            'prod_weight': '5',
+            'prod_price': '120',
+            'prod_instock': '122'}
+        print(value)
+        #add selected product to cart
+
+    return render_template('all_products.html',products=products)
 
 
 

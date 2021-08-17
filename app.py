@@ -107,7 +107,7 @@ def instructor_edit():
 def customer_page_checkin():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
-            return render_template('instructor_login.html')
+            return render_template('customer_login.html')
         else:
             username = request.form.get('username')
             password = request.form.get('password')
@@ -120,7 +120,7 @@ def customer_page_checkin():
             return response
 
         else:
-            return render_template('instructor_login.html')
+            return render_template('customer_login.html')
 
 
 @app.route('/customer_page', methods=['GET', 'POST'])

@@ -3,10 +3,9 @@ from flask import Flask, request, flash, url_for, redirect, render_template, mak
 from flask_migrate import Migrate
 import datetime
 
-
 app = Flask(__name__);
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2536@localhost/hobiburada'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/hobiburada'
 
 
 db = SQLAlchemy(app)
@@ -144,19 +143,24 @@ class adminlogin(db.Model):
 
 class customerlogin(db.Model):
     __tablename__ = 'customerlogin'
-    customerlogin_user = db.Column(db.String, primary_key=True, unique=True)
+    customerlogin_user = db.Column(db.String)
     customerlogin_pass = db.Column(db.String)
-    def __init__(self, customerlogin_user, customerlogin_pass):
+    customerlogin_id = db.Column(db.Integer,db.ForeignKey('customer.cust_id'),primary_key=True)
+    def __init__(self, customerlogin_user, customerlogin_pass, customerlogin_id):
         self.customerlogin_user = customerlogin_user
         self.customerlogin_pass = customerlogin_pass
+        self.customerlogin_id = customerlogin_id
 
 class instructorlogin(db.Model):
     __tablename__ = 'instructorlogin'
-    instructorlogin_user = db.Column(db.String, primary_key=True, unique=True)
+    instructorlogin_user = db.Column(db.String)
     instructorlogin_pass = db.Column(db.String)
-    def __init__(self, instructorlogin_user, instructorlogin_pass):
+    instructorlogin_id = db.Column(db.Integer,db.ForeignKey('instructor.inst_id'),primary_key=True)
+
+    def __init__(self, instructorlogin_user, instructorlogin_pass, instructorlogin_id):
         self.instructorlogin_user = instructorlogin_user
         self.instructorlogin_pass = instructorlogin_pass
+        self.instructorlogin_id = instructorlogin_id
 
 
                 

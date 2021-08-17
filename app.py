@@ -196,13 +196,13 @@ def all_products():
     if id=='add_to_cart':
         added_product= product.query.filter_by(prod_id=int(value)).first()
         cart1 = cart.query.filter_by(cart_cust_id=custlogid,cart_prod_id=int(value)).first()
-        if cart1 != null:
-            print(cart1)
-            cart1.cart_prodcount += 1
-            db.session.commit()
-        else:
+        if cart1 == None:
             new_cart = cart(cart_cust_id=custlogid,cart_prod_id=int(value),cart_prodcount=1)
             db.session.add(new_cart)
+            db.session.commit()
+        else:
+            print(cart1)
+            cart1.cart_prodcount += 1
             db.session.commit()
        
 

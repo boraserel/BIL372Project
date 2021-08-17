@@ -181,11 +181,19 @@ def customer_page():
 
 @app.route('/all_courses', methods=['GET', 'POST'])
 def all_courses():
+
     if request.method == 'POST':
         searched_course = request.form.get('search_bar')  # course id cannot change
         print(searched_course)
-
-
+        filtered_courses = [{
+            'course_id': '111111',
+            'course_name': 'Mimari',
+            'course_category': 'Computer Science',
+            'course_level': '6',
+            'course_price': '500',
+            'course_duration': '12',
+            'course_inst_id': '1'}]
+        return render_template('all_courses.html', all_courses=filtered_courses)
 
     all_courses = [{
         'course_id': '111111',

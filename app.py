@@ -3,7 +3,6 @@ from model import db, app, instructorlogin, needed
 from model import course,instructor,enrolls,needed
 from flask_sqlalchemy import SQLAlchemy
 
-
 @app.route("/")
 def home():
     return render_template('login.html')
@@ -71,22 +70,35 @@ def instructor_page():
         courses = course.query.filter_by(course_inst_id=instid).all()
         response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
     if id == 'editbutton':
-        #selected_course=
-        response = make_response(render_template('instructor_edit.html',instructor_info=instructor_info,selected_course=selected_course))
-                    
+        inst = instructor.query.filter_by(inst_id=instid).first()
+        course_toBeEdited = course.query.filter_by(course_id = value).first()
+        response = make_response(render_template('instructor_edit.html',instructor_info=inst,selected_course=course_toBeEdited))  
+        response.set_cookie("course_id", str(course_toBeEdited.course_id))      
     
-    response.set_cookie("inst_id", str(instructor.inst_id))
+    
+
     return response
 
 @app.route('/instructor_edit', methods=['GET', 'POST'])
 def instructor_edit():
+    instid = request.cookies.get('inst_id',type=int)
+    coursesid = request.cookies.get('course_id',type=int)
+    inst = instructor.query.filter_by(inst_id=instid).first()   
+    course_toBeEdited = course.query.filter_by(course_id = coursesid).first()
     if request.method == 'POST':
-             eID=request.form.get('CourseID')
-             eName= request.form.get('Name')
-             eCategory = request.form.get('Category')
-             eLevel = request.form.get('Level')
-             ePrice = request.form.get('Price')
-             eDuration = request.form.get('Duration')
+             
+
+             course_toBeEdited.course_name= request.form.get('Name')
+             course_toBeEdited.course_category = request.form.get('Category')
+             course_toBeEdited.course_level = request.form.get('Level')
+             course_toBeEdited.course_price = request.form.get('Price')
+             course_toBeEdited.course_duration = request.form.get('Duration')
+             db.session.commit()
+
+             courses = course.query.filter_by(course_inst_id=instid).all()
+
+             response = make_response(render_template('instructor_page.html',instructor_info=inst,courses_by_instructor=courses))
+             return response
 
 @app.route('/customer_page', methods=['GET', 'POST'])
 def customer_page():
@@ -114,7 +126,5 @@ def admin_page():
     #if username and password are not in database redirect instructor page
     #return render_template('instructor_login.html')
     #else redirect instructor page
-
-
 
     return render_template('admin_page.html')

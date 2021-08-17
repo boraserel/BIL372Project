@@ -4,7 +4,7 @@ from flask import Flask, request, flash, url_for, redirect, render_template, mak
 from sqlalchemy.orm import query
 from sqlalchemy.sql.expression import null, update
 from sqlalchemy.sql.sqltypes import String
-from model import db, app, instructorlogin, needed
+from model import db, app, instructorlogin, needed, orders, purchased
 from model import course,instructor,enrolls,needed,customerlogin,customer,product,cart
 
 from flask_sqlalchemy import SQLAlchemy
@@ -222,11 +222,32 @@ def carts():
         countlist.append(x.cart_prodcount)
 
     if id=='delete_from_cart':
-        selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = value)
+        selected_product = cart.query.filter_by(cart_cust_id = custid, cart_prod_id = int(value)).first()
         db.session.delete(selected_product)
         db.session.commit()
+        for x in products_in_cart:
+            list = []
+            countlist = []
+            products_in_cart = cart.query.filter_by(cart_cust_id = custid)
+            list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
+            countlist.append(x.cart_prodcount)
+        return render_template('carts.html',products=list,count=countlist)
     if id=='add_to_order':
-        #add products in cart to order data table
+        order_totalprice = 0;
+        for x in products_in_cart:
+            list = []
+            countlist = []
+            products_in_cart = cart.query.filter_by(cart_cust_id = custid)
+            list.append(product.query.filter_by(prod_id = x.cart_prod_id).first())
+            countlist.append(x.cart_prodcount)
+        
+        #order_quantity = order_quantity
+        #self.order_date = order_date
+        #self.order_totalweight = order_totalweight
+        #self.order_shippingfee = order_shippingfee
+        #self.order_state = order_state
+
+        #neworder = orders()
         #empty cart
         print(id)
 

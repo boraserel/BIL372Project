@@ -128,9 +128,16 @@ def customer_page_checkin():
 @app.route('/customer_edit', methods=['GET', 'POST'])
 def customer_edit():
     cust_id = request.cookies.get('cust_id',type=int)
-
     customer_info = customer.query.filter_by(cust_id=cust_id).first()
-    return render_template('customer_edit.html', customer_info=customer_info)
+
+    customer_info.cust_fname = request.form.get('Name')
+    customer_info.cust_lname = request.form.get('Surname')
+    customer_info.cust_phone = request.form.get('Phone')
+    customer_info.cust_address = request.form.get('Adress')
+    customer_info.cust_bday = request.form.get('Doğum günü')
+    db.session.commit()
+
+    return render_template('customer_page.html', customer_info=customer_info)
 
 
 @app.route('/customer_page', methods=['GET', 'POST'])

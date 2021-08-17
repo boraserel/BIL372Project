@@ -222,6 +222,71 @@ def all_products():
 
     return render_template('all_products.html',products=products)
 
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    id = request.args.get('id') #==delete_from_cart ise
+    value = request.args.get('value') #product id
+    products_in_cart= [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+    if id=='delete_from_cart':
+
+        selected_product = {
+            'prod_id': '111111',
+            'prod_name': 'bahcivan',
+            'prod_brand': 'bahçe',
+            'prod_weight': '5',
+            'prod_price': '120',
+            'prod_instock': '122'}
+        print(id)
+        #delete selected product to cart
+    if id=='add_to_order':
+        #add products in cart to order data table
+        #empty cart
+        print(id)
+
+    return render_template('cart.html',products=products_in_cart)
+
+@app.route('/order', methods=['GET', 'POST'])
+def order():
+    products_in_order= [{
+        'prod_id': '111111',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '22222',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}, {
+        'prod_id': '333333',
+        'prod_name': 'bahcivan',
+        'prod_brand': 'bahçe',
+        'prod_weight': '5',
+        'prod_price': '120',
+        'prod_instock': '122'}]
+
+    return render_template('order.html',products=products_in_order)
+
 
 
 
